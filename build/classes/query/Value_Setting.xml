@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cd.dao.Value_SettingDao">
+	<resultMap type="ssm.cd.vo.Value_SettingVO"  id="Value_SettingVO">
+		<result property="vsNo"          column="VS_NO"/>
+		<result property="ssNo"          column="SS_NO"/>
+		<result property="vsFirst"          column="VS_FIRST"/>
+		<result property="vsSecond"          column="VS_SECOND"/>
+		<result property="vsThird"          column="VS_THIRD"/>
+		<result property="vsInsertdate"          column="VS_INSERTDATE"/>
+		<result property="vsUpdatedate"          column="VS_UPDATEDATE"/>
+	</resultMap>
+
+	<!-- 채번 가져오기 -->
+	<select id="makeChaebun_VS" parameterType="ssm.cd.vo.Value_SettingVO" resultType="int">
+		SELECT NVL(MAX(SUBSTR(VS_NO,-4)),0)+1 AS VS_NO FROM VALUE_SETTING
+	</select>
+	<insert id="saveValueSetting" parameterType="ssm.cd.vo.Value_SettingVO">
+		INSERT INTO VALUE_SETTING(VS_NO,
+								  SS_NO,
+								  VS_FIRST,
+								  VS_SECOND,
+								  VS_THIRD,
+								  VS_INSERTDATE,
+								  VS_UPDATEDATE	)
+		VALUES					 (#{vsNo},
+							 	  #{ssNo},
+							 	  #{vsFirst},
+							 	  #{vsSecond},
+							 	  #{vsThird},
+							 	  SYSDATE,
+							 	  SYSDATE)
+	
+	</insert>
+	
+	<select id="loadValueSetting" parameterType="ssm.cd.vo.Value_SettingVO" resultMap="Value_SettingVO">
+		SELECT
+		*
+		FROM VALUE_SETTING
+		WHERE SS_NO=#{ssNo}
+	</select>
+	
+	<update id="updateValueSetting" parameterType="ssm.cd.vo.Value_SettingVO">
+		UPDATE VALUE_SETTING 
+		SET VS_FIRST= #{vsFirst},
+		    VS_SECOND=#{vsSecond},
+		    VS_THIRD= #{vsThird}
+	    WHERE SS_NO= #{ssNo}
+	</update>
+</mapper>

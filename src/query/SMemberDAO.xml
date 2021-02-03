@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ssm.mi.dao.SMemberDao">
+	<resultMap type="ssm.mi.vo.BasicInformationVO" id="BIVO">
+		<result property="biNo"         column="BI_NO"/>
+		<result property="ssNo"         column="SS_NO"/>
+		<result property="biInterest"   column="BI_INTEREST"/>
+		<result property="biAddress"    column="BI_ADDRESS"/>
+		<result property="biPn"         column="BI_PN"/>
+		<result property="biRType"      column="BI_RTYPE"/>
+		<result property="biCType"      column="BI_CTYPE"/>
+		<result property="biCTime"      column="BI_CTIME"/>
+		<result property="biIncome"     column="BI_INCOME"/>
+		<result property="biPJob"       column="BI_PJOB"/>
+		<result property="biCA"         column="BI_CA"/>
+		<result property="biSense"      column="BI_SENSE"/>
+		<result property="biWJ"         column="BI_WJ"/>
+		<result property="biWF"         column="BI_WF"/>
+		<result property="biWI"         column="BI_WI"/>
+		<result property="biReason"     column="BI_REASON"/>
+		<result property="biComment"    column="BI_COMMENT"/>
+		<result property="biDeleteYN"   column="BI_DELETEYN"/>
+		<result property="biInsertdate" column="BI_INSERTDATE"/>
+		<result property="biUpdatedate" column="BI_UPDATEDATE"/>
+	</resultMap>
+	
+	<resultMap type="ssm.mi.vo.BasicInformationVO" id="BVO">
+		<result property="biNo"         column="BI_NO"/>
+		<result property="ssNo"         column="SS_NO"/>
+		<result property="biInterest"   column="BI_INTEREST"/>
+		<result property="biAddress"    column="BI_ADDRESS"/>
+		<result property="biPn"         column="BI_PN"/>
+		<result property="biRType"      column="BI_RTYPE"/>
+		<result property="biCType"      column="BI_CTYPE"/>
+		<result property="biCTime"      column="BI_CTIME"/>
+		<result property="biIncome"     column="BI_INCOME"/>
+		<result property="biPJob"       column="BI_PJOB"/>
+		<result property="biCA"         column="BI_CA"/>
+		<result property="biSense"      column="BI_SENSE"/>
+		<result property="biWJ"         column="BI_WJ"/>
+		<result property="biWF"         column="BI_WF"/>
+		<result property="biWI"         column="BI_WI"/>
+		<result property="biReason"     column="BI_REASON"/>
+		<result property="biComment"    column="BI_COMMENT"/>
+		<result property="biDeleteYN"   column="BI_DELETEYN"/>
+		<result property="biInsertdate" column="BI_INSERTDATE"/>
+		<result property="biUpdatedate" column="BI_UPDATEDATE"/>
+	</resultMap>
+
+
+<resultMap type="ssm.mi.vo.SMemberVO" id="SINFO">
+      <result property="ssNo"          column="SS_NO"/>
+      <result property="ssName"        column="SS_NAME"/>
+      <result property="ssGrade"       column="SS_GRADE"/>
+      <result property="ssEmail"       column="SS_EMAIL"/>
+      <result property="ssGender"      column="SS_GENDER"/>
+   </resultMap>
+	<resultMap type="ssm.mi.vo.SMemberVO"  id="sMemberVO">
+		<result property="ssNo"          column="SS_NO"/>
+		<result property="ssName"        column="SS_NAME"/>
+		<result property="ssGrade"       column="SS_GRADE"/>
+		<result property="ssBirth"       column="SS_BIRTH"/>
+		<result property="ssGender"      column="SS_GENDER"/>
+		<result property="ssAuthority"   column="SS_AUTHORITY"/>
+		<result property="ssId"          column="SS_ID"/>
+		<result property="ssPw"          column="SS_PW"/>
+		<result property="ssPn"          column="SS_PN"/>
+		<result property="ssEmail"       column="SS_EMAIL"/>
+		<result property="ssPostno"      column="SS_POSTNO"/>
+		<result property="ssAddress"     column="SS_ADDRESS"/>
+		<result property="ssImage"       column="SS_IMAGE"/>
+		<result property="ssDeleteYN"    column="SS_DELETEYN"/>
+		<result property="ssInsertdate"  column="SS_INSERTDATE"/>
+		<result property="ssUpdatedate"  column="SS_UPDATEDATE"/>
+	</resultMap>
+	
+	<resultMap type="ssm.mi.vo.SMemberGrVO"  id="sMemberGrVO">
+		<result property="ssNo"          column="SS_NO"/>
+		<result property="ttNo"          column="TT_NO"/>
+		
+		
+		<result property="fmNo"          column="FM_NO"/>
+		<result property="fmGrade"       column="FM_GRADE"/>
+		<result property="fmClass"       column="FM_CLASS"/>
+		<result property="fmNum"         column="FM_NUM"/>
+		
+		<result property="fmDeleteYN"    column="FM_DELETEYN"/>
+		<result property="fmInsertdate"  column="FM_INSERTDATE"/>
+		<result property="fmUpdatedate"  column="FM_UPDATEDATE"/>
+		
+		<result property="jrNo"          column="JR_NO"/>
+		<result property="jrGrade"       column="JR_GRADE"/>
+		<result property="jrClass"       column="JR_CLASS"/>
+		<result property="jrNum"         column="JR_NUM"/>
+		
+		<result property="jrDeleteYN"    column="JR_DELETEYN"/>
+		<result property="jrInsertdate"  column="JR_INSERTDATE"/>
+		<result property="jrUpdatedate"  column="JR_UPDATEDATE"/>
+		
+		<result property="srNo"          column="SR_NO"/>
+		<result property="srGrade"       column="SR_GRADE"/>
+		<result property="srClass"       column="SR_CLASS"/>
+		<result property="srNum"         column="SR_NUM"/>
+		
+		<result property="srDeleteYN"    column="SR_DELETEYN"/>
+		<result property="srInsertdate"  column="SR_INSERTDATE"/>
+		<result property="srUpdatedate"  column="SR_UPDATEDATE"/>
+	</resultMap>
+	<resultMap type = "ssm.mi.vo.TMemberVO" id="TMemberVO">
+		<result property="ttNo" column="TT_NO" />
+		<result property="ttName" column="TT_NAME"/>
+		<result property="ttBirth" column="TT_BIRTH" />
+		<result property="ttGender" column="TT_GENDER" />
+		<result property="ttAuthority" column="TT_AUTHORITY" />
+		<result property="sjtCode" column="SJTCODE" />
+		<result property="ttId" column="TT_ID" />
+		<result property="ttPw" column="TT_PW"/>
+		<result property="ttTransferyear" column="TT_TRANSFERYEAR" />
+		<result property="ttPn" column="TT_PN" />
+		<result property="ttEmail" column="TT_EMAIL" />
+		<result property="ttGrade" column="TT_GRADE" />
+		<result property="ttClass" column="TT_CLASS" />
+		<result property="ttPostno" column="TT_POSTNO" />
+		<result property="ttAddress" column="TT_ADDRESS" />
+		<result property="ttImage" column="TT_IMAGE" />
+		<result property="ttDeleteyn" column="TT_DELETEYN" />
+		<result property="ttInsertdate" column="TT_INSERTDATE" />
+		<result property="ttUpdatedate" column="TT_UPDATEDATE" />	
+	</resultMap>
+	<resultMap type="ssm.mi.vo.SMemberVO"  id="ggSMVO">
+      <result property="ssNo"          column="SS_NO"/>
+      <result property="ssGrade"       column="SS_GRADE"/>
+   </resultMap>
+	
+	<!-- 사용자(학생)의 정보가 DB에 있는 정보인지 확인하는 쿼리 -->
+	<select id="checkInfo" parameterType="ssm.mi.vo.SMemberVO" resultMap="sMemberVO">
+		SELECT
+				SS_NO,
+				SS_NAME,
+				SS_PN,
+				SS_ID,
+				SS_BIRTH,
+				SS_AUTHORITY,
+				SS_GENDER
+		FROM S_MEMBER
+		WHERE SS_DELETEYN = 'Y'
+		AND SS_NAME = #{ssName}
+		AND SS_BIRTH = #{ssBirth}
+		AND SS_PN = #{ssPn}
+	</select>
+
+	
+	<!-- 사용자(학생)이 입력한 정보를 학생정보테이블에 저장하는 쿼리 -->
+	<update id="insertInfo" parameterType="ssm.mi.vo.SMemberVO" >
+		UPDATE S_MEMBER 
+		SET
+			SS_ID = #{ssId},
+			SS_PW = #{ssPw},
+			SS_IMAGE = #{ssImage},
+			SS_EMAIL = #{ssEmail},
+			SS_GENDER = #{ssGender},
+			SS_AUTHORITY = 'Y'
+			SS_UPDATEDATE = SYSDATE
+		WHERE SS_DELETEYN = 'Y'
+		AND SS_NO = #{ssNo}
+	</update>
+<!-- 	<if test="fmGrade != null and fmGrade != '' "> -->
+			
+<!-- 	</if> -->
+	
+	<!-- 학년테이블의 chaebun구하는 쿼리 -->
+	<select id="chaebunGr" resultType="int">
+		<if test="fmGrade != null and fmGrade != '' ">
+			SELECT 
+ 					NVL(MAX(SUBSTR(FM_NO,4)),0) + 1 AS FM_NO 
+ 	    	FROM FM_MEMBER
+		</if>
+		<if test="jrGrade != null and jrGrade != '' ">
+			SELECT 
+ 					NVL(MAX(SUBSTR(JR_NO,4)),0) + 1 AS JR_NO 
+ 	    	FROM JR_MEMBER
+		</if>
+		<if test="srGrade != null and srGrade != '' ">
+			SELECT 
+ 					NVL(MAX(SUBSTR(SR_NO,4)),0) + 1 AS SR_NO
+ 	    	FROM SR_MEMBER
+		</if>
+	
+	</select>
+	
+	
+	<!-- 학년테이블에 학생의 정보를 저장 -->
+	<update id="insertGr" parameterType="ssm.mi.vo.SMemberGrVO">
+		<if test="fmGrade != null and fmGrade != '' ">
+			INSERT INTO FM_MEMBER(
+						FM_NO,
+						SS_NO,
+						FM_GRADE,
+						FM_CLASS,
+						FM_NUM,
+						TT_NO,
+						FM_DELETEYN,
+						FM_UPDATEDATE,
+						FM_INSERTDATE
+			)VALUES(	
+						#{fmNo},
+						#{ssNo},
+						#{fmGrade},
+						#{fmClass},
+						#{fmNum},
+						#{ttNo},
+						'Y',
+						SYSDATE,
+						SYSDATE
+			) 
+		</if>
+		<if test="jrGrade != null and jrGrade != '' ">
+			INSERT INTO JR_MEMBER(
+						JR_NO,
+						SS_NO,
+						JR_GRADE,
+						JR_CLASS,
+						JR_NUM,
+						TT_NO,
+						JR_DELETEYN,
+						JR_UPDATEDATE,
+						JR_INSERTDATE
+			)VALUES(	
+						#{jrNo},
+						#{ssNo},
+						#{jrGrade},
+						#{jrClass},
+						#{jrNum},
+						#{ttNo},
+						'Y',
+						SYSDATE,
+						SYSDATE
+			) 
+		</if>
+		<if test="srGrade != null and srGrade != '' ">
+			INSERT INTO SR_MEMBER(
+						SR_NO,
+						SS_NO,
+						SR_GRADE,
+						SR_CLASS,
+						SR_NUM,
+						TT_NO,
+						SR_DELETEYN,
+						SR_UPDATEDATE,
+						SR_INSERTDATE
+			)VALUES(	
+						#{srNo},
+						#{ssNo},
+						#{srGrade},
+						#{srClass},
+						#{srNum},
+						#{ttNo},
+						'Y',
+						SYSDATE,
+						SYSDATE
+			) 
+		</if>
+		
+	</update>
+	
+	
+	
+	<!-- 학년과 반을 통하여 담임선생님의 번호를 가져오는 쿼리 -->
+	<select id="teacherInfo" parameterType="ssm.mi.vo.SMemberGrVO" resultMap="TMemberVO">
+		SELECT 
+			  TT_NO
+		FROM T_MEMBER
+		WHERE TT_DELETEYN = 'Y'
+		<if test="fmGrade != null and fmGrade != '' ">
+			AND TT_GRADE = #{fmGrade}
+			AND TT_CLASS = #{fmClass}
+		</if>
+		<if test="jrGrade != null and jrGrade != '' ">
+			AND TT_GRADE = #{jrGrade}
+			AND TT_CLASS = #{jrClass}
+		</if>
+		<if test="srGrade != null and srGrade != '' ">
+			AND TT_GRADE = #{srGrade}
+			AND TT_CLASS = #{srClass}
+		</if>
+	</select>
+	
+	<select id="ajaxIdCheck" parameterType="ssm.mi.vo.SMemberVO" resultMap="sMemberVO">
+		SELECT
+		      SS_ID
+		FROM S_MEMBER
+		WHERE UPPER(SS_ID) = #{ssId}
+	</select>
+	
+			<select id="biChaebun" resultType="String">
+		 SELECT NVL(MAX(SUBSTR(BI_NO,-4)),0)+1 AS BI_NO FROM BASIC_INFORMATION
+	</select>
+	
+	<insert id="BIInsert" parameterType="ssm.mi.vo.BasicInformationVO" >
+		INSERT INTO BASIC_INFORMATION VALUES(
+				#{biNo},
+				#{ssNo},
+				#{biInterest,jdbcType=VARCHAR},
+				#{biAddress,jdbcType=VARCHAR},
+				#{biPn,jdbcType=VARCHAR},
+				#{biRType,jdbcType=VARCHAR},
+				#{biCType,jdbcType=VARCHAR},
+				#{biCTime,jdbcType=VARCHAR},
+				#{biIncome,jdbcType=VARCHAR},
+				#{biPJob,jdbcType=VARCHAR},
+				#{biCA,jdbcType=VARCHAR},
+				#{biSense,jdbcType=VARCHAR},
+				#{biWJ,jdbcType=VARCHAR},
+				#{biWF,jdbcType=VARCHAR},
+				#{biWI,jdbcType=VARCHAR},
+				#{biReason,jdbcType=VARCHAR},
+				#{biComment,jdbcType=VARCHAR},
+				'Y',
+				SYSDATE,
+				SYSDATE
+		)
+	</insert>
+	<update id="BIUpdate" parameterType="ssm.mi.vo.BasicInformationVO">
+		UPDATE BASIC_INFORMATION
+		SET
+			BI_INTEREST   = #{biInterest,jdbcType=VARCHAR},
+			BI_ADDRESS    = #{biAddress,jdbcType=VARCHAR},
+			BI_PN         = #{biPn,jdbcType=VARCHAR},
+			BI_RTYPE      = #{biRType,jdbcType=VARCHAR},
+			BI_CTYPE      = #{biCType,jdbcType=VARCHAR},
+			BI_CTIME      = #{biCTime,jdbcType=VARCHAR},
+			BI_INCOME     = #{biIncome,jdbcType=VARCHAR},
+			BI_PJOB       = #{biPJob,jdbcType=VARCHAR},
+			BI_CA         = #{biCA,jdbcType=VARCHAR},
+			BI_SENSE      = #{biSense,jdbcType=VARCHAR},
+			BI_WJ         = #{biWJ,jdbcType=VARCHAR},
+			BI_WF         = #{biWF,jdbcType=VARCHAR},
+			BI_WI         = #{biWI,jdbcType=VARCHAR},
+			BI_REASON     = #{biReason,jdbcType=VARCHAR},
+			BI_COMMENT    = #{biComment,jdbcType=VARCHAR},
+			BI_DELETEYN   = 'Y',
+			BI_UPDATEDATE = SYSDATE
+		WHERE BI_DELETEYN   = 'Y'
+		AND SS_NO = #{ssNo}
+	</update>
+	
+	<select id="sInformation" parameterType="ssm.mi.vo.SMemberVO" resultMap="SINFO">
+      SELECT
+          SS_NO,
+          SS_NAME,
+          SS_EMAIL,
+          SS_GRADE,
+          SS_GENDER
+      FROM S_MEMBER
+      WHERE SS_DELETEYN = 'Y'
+      AND SS_NO = #{ssNo}
+      
+   </select>
+
+
+	<select id="basicInformation" parameterType="ssm.mi.vo.BasicInformationVO" resultMap="BIVO">
+		SELECT
+			  BI_NO,
+			  SS_NO,
+			  BI_INTEREST,
+			  BI_ADDRESS,
+			  BI_PN,
+			  BI_RTYPE,
+			  BI_CTYPE,
+			  BI_CTIME,
+			  BI_INCOME,
+			  BI_PJOB,
+			  BI_CA,
+			  BI_SENSE,
+			  BI_WJ,
+			  BI_WF,
+			  BI_WI,
+			  BI_REASON,
+			  BI_COMMENT,
+			  BI_DELETEYN,
+			  BI_INSERTDATE,
+			  BI_UPDATEDATE
+		FROM BASIC_INFORMATION	 
+		WHERE BI_DELETEYN = 'Y'
+		AND   SS_NO       = #{ssNo}
+	</select>
+	
+	<select id="selectPn" parameterType="ssm.mi.vo.SMemberVO" resultMap="sMemberVO">
+		SELECT
+			  SS_PN
+		FROM S_MEMBER
+		WHERE SS_DELETEYN = 'Y'
+		AND SS_NO = #{ssNo}  
+	</select>
+	
+	<select id="getGrade" parameterType="ssm.mi.vo.SMemberVO" resultMap="ggSMVO">
+      SELECT
+           SS_GRADE
+      FROM S_MEMBER
+      WHERE SS_NO = #{ssNo}
+   </select>
+</mapper>

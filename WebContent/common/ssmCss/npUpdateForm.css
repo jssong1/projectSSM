@@ -1,0 +1,72 @@
+/* 전체 div */
+.boardwriteformcontainer {
+	width:1050px;
+	/* height:677px; */
+	margin-bottom:50px;
+	float:left;
+	font-size:15px;
+}
+
+/* 제목 div */
+.sub_title_wrap {
+	background:#394264;
+	height:54px;
+	margin-right:10px;
+   	margin-bottom:10px;
+   	margin-left:10px;
+	font-size: 28px;
+    line-height: 55px;
+    text-indent: 20px;
+    font-weight: bold;
+    color: #fff;
+
+}
+
+/* 제목 div의 글씨 힌색으로 바꿔줌 */
+a[target="a_"]{	
+	color: #fff; font-size: 15px;
+}
+
+/* 메인이미지 div */
+#mainimage {
+	border: 20px solid #394264;
+	background:#394264;
+	margin-right:10px;
+	margin-left:10px;
+}
+
+/* 게시판 내용 */
+#writeform {
+	margin-top:3px;
+	margin-right:10px;
+	margin-left:10px;
+	margin-bottom: 20px;
+}	
+
+table.writeformtable{
+	ver
+	width:100%; 
+}
+
+/* 테이블의 첫번째 td 설정 */
+table.writeformtable td:first-child{
+   background: #394264;
+   width:140px;
+}
+
+/* 테이블의 홀수 tr 설정 */
+table.writeformtable tr:nth-child(odd){
+	
+   height: 33px;
+}
+
+/* 테이블의 홀수 td 설정 */
+table.writeformtable td:nth-child(odd){
+	background: #394264;
+   height: 33px;
+}
+
+/* 테이블의 2번째 td 설정 */
+table.writeformtable td:nth-child(2){
+   padding-left:20px;
+}

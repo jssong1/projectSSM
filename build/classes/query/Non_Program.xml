@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.br.dao.Non_ProgramDao">
+	<resultMap type="ssm.br.vo.Non_ProgramVO"  id="Non_ProgramVO">
+		<result property="npNo"             column="NP_NO"/>
+		<result property="npTitle"          column="NP_TITLE"/>
+		<result property="npContents"       column="NP_CONTENTS"/>
+		<result property="npCenter"         column="NP_CENTER"/>
+		<result property="npImage"          column="NP_IMAGE"/>
+		<result property="npRsdate"         column="NP_RSDATE"/>
+		<result property="npRedate"         column="NP_REDATE"/>
+		<result property="npPsdate"         column="NP_PSDATE"/>
+		<result property="npPedate"         column="NP_PEDATE"/>
+		<result property="npObject"         column="NP_OBJECT"/>
+		<result property="npPersonnel"	    column="NP_PERSONNEL"/>
+		<result property="ttNo"		        column="TT_NO"/>
+		<result property="ttName"	        column="TT_NAME"/>
+		<result property="npIo"		        column="NP_IO"/>
+		<result property="acode"		    column="ACODE"/>
+		<result property="npDeleteyn"	    column="np_Deleteyn"/>
+		<result property="npInsertdate"     column="NP_INSERTDATE"/>
+		<result property="npUpdatedate"	    column="NP_UPDATEDATE"/>
+		<result property="pageNo"		    column="PAGENO"/>
+		<result property="listSize"		    column=""/>
+		<result property="totalCount"	    column="TOTALCOUNT"/>
+		<result property="npFile"		    column="NP_FILE"/>
+		
+	</resultMap>
+	
+	<select id= "np_Chaebun" parameterType="ssm.br.vo.Non_ProgramVO" resultType="String">
+		SELECT NVL(MAX(SUBSTR(NP_NO,-4)),0)+1 AS NP_NO FROM NONPROGRAM
+	</select>
+	<!-- 글작성 쿼리-->
+	<insert id= "np_InsertData" parameterType="ssm.br.vo.Non_ProgramVO" >
+		INSERT INTO NONPROGRAM(
+								NP_NO,
+								NP_TITLE,
+								NP_CONTENTS,
+								NP_CENTER,
+								NP_IMAGE,
+								NP_RSDATE,
+								NP_REDATE,
+								NP_PSDATE,
+								NP_PEDATE,
+								NP_OBJECT,
+								NP_PERSONNEL,
+								TT_NO,
+								NP_IO,
+								ACODE,
+								np_Deleteyn,
+								NP_INSERTDATE,
+								NP_UPDATEDATE,
+								NP_FILE)
+		VALUES(					#{npNo},
+								#{npTitle},
+								#{npContents},
+								#{npCenter},
+								#{npImage},
+								#{npRsdate},
+								#{npRedate},
+								#{npPsdate},
+								#{npPedate},
+								#{npObject},
+								#{npPersonnel},
+								#{ttNo},
+								#{npIo},
+								#{acode},
+								'Y',
+								SYSDATE,
+								SYSDATE,
+								#{npFile}
+		)
+	</insert>
+	<!-- 메인 들어올시 실행쿼리-->
+	<select id = "listProgram" parameterType="ssm.br.vo.Non_ProgramVO" resultMap="Non_ProgramVO">
+		SELECT B.* 
+		FROM(
+			SELECT  NP_NO,
+					NP_TITLE,
+					NP_CONTENTS,
+					NP_CENTER,
+					NP_IMAGE,
+					NP_RSDATE,
+					NP_REDATE,
+					NP_PSDATE,
+					NP_PEDATE,
+					NP_OBJECT,
+					NP_PERSONNEL,
+					A.TT_NO,
+					(SELECT TT_NAME FROM T_MEMBER WHERE TT_NO=A.TT_NO) TT_NAME,
+					NP_IO,
+					ACODE,
+					NP_DELETEYN,
+					NP_INSERTDATE,
+					NP_UPDATEDATE,
+					CEIL(ROW_NUMBER() OVER(ORDER BY NP_NO DESC)/#{listSize}) PAGENO,
+              	 	COUNT(NP_NO) OVER() AS TOTALCOUNT
+			FROM NONPROGRAM A
+			WHERE NP_DELETEYN='Y'
+			
+			)B
+        WHERE PAGENO = #{pageNo}
+         <if test="npTitle!='' and npTitle!= null ">
+		AND NP_TITLE LIKE '%'|| #{npTitle} ||'%'
+     	</if>
+     	 <if test="npContents!='' and npContents!= null ">
+		AND NP_CONTENTS LIKE '%'|| #{npContents} ||'%'
+     	</if>
+	</select>
+		
+	<!-- 디테일클릭시 데이터가져올쿼리 -->
+	<select id = "np_detailData" parameterType="ssm.br.vo.Non_ProgramVO" resultMap="Non_ProgramVO">
+		SELECT  NP_NO,
+				NP_TITLE,
+				NP_CONTENTS,
+				NP_CENTER,
+				NP_IMAGE,
+				NP_RSDATE,
+				NP_REDATE,
+				NP_PSDATE,
+				NP_PEDATE,
+				NP_OBJECT,
+				NP_PERSONNEL,
+				A.TT_NO,
+				(SELECT TT_NAME FROM T_MEMBER WHERE TT_NO=A.TT_NO) TT_NAME,
+				NP_IO,
+				ACODE,
+				NP_FILE
+			FROM NONPROGRAM A
+			WHERE NP_NO=#{npNo}
+	</select>
+	
+	
+	<!-- 글수정쿼리 -->
+	<update id="np_DetailUpdate" parameterType="ssm.br.vo.Non_ProgramVO">
+		UPDATE NONPROGRAM
+		SET		NP_TITLE=#{npTitle},
+				NP_CONTENTS=#{npContents},
+				NP_CENTER=#{npCenter},
+				NP_IMAGE=#{npImage},
+				NP_RSDATE=#{npRsdate},
+				NP_REDATE=#{npRedate},
+				NP_PSDATE=#{npPsdate},
+				NP_PEDATE=#{npPedate},
+				NP_OBJECT=#{npObject},
+				NP_PERSONNEL=#{npPersonnel},
+				NP_IO=#{npIo},
+				ACODE=#{acode},
+				NP_UPDATEDATE=SYSDATE
+		WHERE NP_NO=#{npNo}
+	</update>
+	
+	<update id="np_Delete" parameterType="ssm.br.vo.Non_ProgramVO">
+		UPDATE NONPROGRAM
+		SET		NP_DELETEYN = 'N',
+				NP_UPDATEDATE=SYSDATE
+		WHERE NP_NO=#{npNo}
+	</update>
+</mapper>

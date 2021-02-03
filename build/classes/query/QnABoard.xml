@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ssm.cm.dao.QnABoardDao">
+	
+	 
+	<resultMap type="ssm.mi.vo.SMemberVO" id="SMemberVO">
+	    <result property="ssNo" 			column="SS_NO"/>
+	    <result property="ssName" 			column="SS_NAME"/>
+	</resultMap>
+	 
+	<resultMap type="ssm.cm.vo.QnABoardVO" id="qbVO">
+	    <result property="qbNo" 			column="QB_NO"/>
+	    <result property="qbTitle" 			column="QB_TITLE"/>
+	    <result property="qbContents" 		column="QB_CONTENTS"/>
+	    <result property="ssNo" 			column="SS_NO"/>
+	    <result property="qbInsertdate" 	column="QB_INSERTDATE"/>
+	    <result property="qbUpdatedate" 	column="QB_UPDATEDATE"/>
+	    <result property="qbDeleteyn" 		column="QB_DELETEYN"/>
+	    <result property="qbSecretyn" 		column="QB_SECRETYN"/>
+	    <result property="qbPw" 			column="QB_PW"/>
+	    <result property="qaCount" 			column="QA_COUNT"/>
+	    <result property="qbType" 			column="QB_TYPE"/>
+	    <result property="qbViews" 			column="QB_VIEWS"/>
+	    <result property="pageNo"		    column="PAGENO"/>
+		<result property="listSize"		    column=""/>
+		<result property="totalCount"		column="TOTALCOUNT"/>
+	    <collection property="sMembervo" 	resultMap="SMemberVO"/>
+	</resultMap>
+	
+	<select id ="qblist" parameterType="ssm.cm.vo.QnABoardVO" resultMap="qbVO">
+		SELECT 
+		*
+		FROM
+			(SELECT 
+					A.QB_NO, 
+					B.SS_NAME, 
+					A.QB_TITLE, 
+					A.QB_INSERTDATE,
+					A.QB_SECRETYN,
+					A.QB_VIEWS,
+					A.QB_Type,
+					(SELECT COUNT(C.QA_NO) NCNT FROM  QNA_ANSWER C WHERE  C.QB_NO = A.QB_NO AND C.QA_DELETEYN = 'Y') QA_COUNT,
+					CEIL(ROW_NUMBER() OVER(ORDER BY A.QB_NO DESC)/#{listSize}) PAGENO,
+	     			COUNT(A.QB_NO) OVER() AS TOTALCOUNT 
+			FROM QNA_BOARD A, S_MEMBER B 
+			WHERE QB_DELETEYN ='Y'
+			AND A.SS_NO = B.SS_NO
+			<trim prefix="AND" >
+			<if test="search=='qbTitle' ">
+				<![CDATA[QB_TITLE LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			<if test="search=='qbContents'">
+				<![CDATA[QB_CONTENTS LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			<if test="search=='ssName'">
+				<![CDATA[SS_NAME LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			</trim>
+			) ABC
+				WHERE ABC.PAGENO = #{pageNo}
+				ORDER BY QB_NO DESC
+	</select>
+	
+	<select id="qbChaebun" parameterType="ssm.cm.vo.QnABoardVO" resultMap="qbVO">
+		
+		SELECT
+		TO_CHAR(NVL(MAX(SUBSTR(QB_NO,-4)),0)+1) QB_NO
+		FROM QNA_BOARD
+		
+	</select>
+	
+	<insert id="qbInsert" parameterType="ssm.cm.vo.QnABoardVO">
+	
+		INSERT INTO QNA_BOARD(QB_NO,
+							  SS_NO,
+							  QB_Type,
+							  QB_TITLE,
+							  QB_CONTENTS,
+							  QB_DELETEYN,
+							  QB_INSERTDATE,
+							  QB_SECRETYN
+							  )
+		VALUES(#{qbNo},
+			   #{ssNo},
+			   #{qbType},
+			   #{qbTitle},
+			   #{qbContents},
+			   'Y',
+			   SYSDATE,
+			   #{qbSecretyn}
+			   )
+	
+	</insert>
+	
+	<select id="pwdConfirm" parameterType="map" resultType="int">
+	SELECT NVL((SELECT 1 
+            FROM QNA_BOARD A, S_MEMBER B 
+            WHERE A.SS_NO = B.SS_NO
+            AND A.QB_NO = #{param1.qbNo}
+            AND B.SS_PW = #{param2}),0)as result
+		FROM dual
+	</select>
+	
+	<update id="qbUpdate" parameterType="ssm.cm.vo.QnABoardVO">
+	
+		UPDATE QNA_BOARD SET 
+								 QB_TYPE = #{qbType}
+								,QB_TITLE = #{qbTitle}
+								,QB_CONTENTS = #{qbContents}
+								,QB_UPDATEDATE = SYSDATE
+								,QB_SECRETYN = #{qbSecretyn}
+		WHERE 					 QB_NO = #{qbNo}						
+		AND  					 QB_DELETEYN = 'Y'
+	</update>
+	
+	<update id="qbDelete" parameterType="ssm.cm.vo.QnABoardVO">
+	
+		UPDATE QNA_BOARD SET 
+								 QB_UPDATEDATE = SYSDATE
+								,QB_DELETEYN = 'N' 
+		WHERE 					 QB_NO = #{qbNo}						
+		AND  					 QB_DELETEYN = 'Y'
+	</update>
+	
+	<select id="qbDetail" parameterType="ssm.cm.vo.QnABoardVO" resultMap="qbVO">
+		SELECT
+				A.QB_NO, 
+				B.SS_NAME, 
+				A.QB_TYPE, 
+				A.QB_TITLE, 
+				A.QB_CONTENTS, 
+				A.QB_INSERTDATE, 
+				A.QB_UPDATEDATE,
+				A.QB_DELETEYN,
+				A.QB_SECRETYN
+		FROM QNA_BOARD A, S_MEMBER B
+		WHERE QB_NO =#{qbNo}
+		AND QB_DELETEYN='Y'
+		AND A.SS_NO = B.SS_NO
+	</select>
+	
+	<update id="qbViews" parameterType="ssm.cm.vo.QnABoardVO">
+	
+		UPDATE QNA_BOARD SET 
+								 QB_VIEWS = QB_VIEWS + 1
+		WHERE 					 QB_NO = #{qbNo}						
+		AND  					 QB_DELETEYN = 'Y'
+	</update>
+	
+</mapper>

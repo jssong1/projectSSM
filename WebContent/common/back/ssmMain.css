@@ -1,0 +1,342 @@
+/* ============================ 배경색 */
+#goLink li, #noticeBox, #goVideo, 
+#nonSubject, #school, #exLink {
+	background-color: #2b475e;
+}
+
+#loginBox #loginBtn, .afterLogin {
+	background-color: #fead09;
+}
+
+#loginBox {
+	background-color: #2b475e;
+}
+
+/* 배경색 ============================*/
+section {
+	width: 100%;
+	height: 80%;
+	color: white;
+}
+
+/* subWrap_1 (왼쪽) */
+section>.subWrap_1 {
+	float: left;
+	width: 25%;
+	height: 100%;
+}
+
+/* h2 기본 */
+h2 {
+	margin: 0px;
+}
+
+
+/***********************/
+
+/* 로그인 박스  div */
+.subWrap_1 #loginBox {
+	float: left;
+	width: 94%;
+	height: 59%;
+	padding: 2%;
+	margin-right: 2%;
+	margin-bottom: 2%;
+}
+
+/*로그인 사용자 선택 리스트(ul 가운데 정렬) */
+#loginForm>.list {
+	margin: 10px auto;
+}
+
+/* 사용자 선택 버튼 */
+.list li .imgBtn {
+	border: 1px;
+	padding: 3px;
+	padding-bottom: 15px;
+	background: url("include/img/sick.png");
+}
+
+/*로그인 사용자 선택 리스트(li) */
+#loginForm>.list li {
+	float: left;
+	text-align: center;
+	font-size: 10px;
+	width: 70px;
+	height: 74px;
+	margin: 7px;
+}
+
+/* 로그인 입력창 */
+#loginForm>#loginId, #loginPw {
+	width: 90%;
+	height: 42px;
+	margin: 5px 5px;
+	height: 42px;
+}
+
+/* 로그인 버튼 */
+#loginForm>#loginBtn {
+	color: white;
+	text-align: center;
+	margin: 5px;
+	display: inline-block;
+	padding: 14px 4px;
+	width: 90%;
+	font-weight: bold;
+	border-radius: 10px;	
+}
+/* 로그인 후 버튼 */
+.afterLogin {
+	color: white;
+	text-align: center;
+	margin: 5px;
+	display: inline-block;
+	padding: 9px 0px;
+	width: 90%;
+	font-weight: bold;
+	border-radius: 10px;
+}
+
+/* 로그인 후 사용자 이미지 */
+#userForm #userImg {
+	width: 140px;
+	height: 140px;
+	margin: 0px auto 20px;
+	background-color: white;
+}
+
+/* 로그인 후 인삿말 */
+#userForm p {
+	margin: 9px 0 0;
+}
+
+/* 공지 박스 */
+section>.subWrap_1 #noticeBox {
+	clear: both;
+	width: 90%;
+	height: 35%;
+	margin: 2% 0 0;
+	padding: 4%;
+	font-size: 20px;
+	overflow: auto;
+}
+
+/* 학교공지, 비교과 게시판 링크 */
+#noticeBox a, #nonSubject a {
+	color: white;
+	font-size : 14px;
+}
+
+#noticeBox li, #programList li {
+	height: 19px;
+	display: table-row;
+	text-align: left;
+}
+
+#noticeBox span, #nonSubject span {
+ 	text-align: left;
+    display : table-cell;
+    font-size: 10px;
+    vertical-align: middle;
+/*     background-color: red; */
+    padding: 10px 0;
+}
+
+
+/***********************/
+/* subWrap_2 (중앙) */
+section>.subWrap_2 {
+	float: left;
+	width: 50%;
+	height: 100%;
+}
+
+/* 중앙 메인이미지 */
+.subWrap_2>#mainImg {
+	width: 96%;
+	padding: 2%;
+	height: 85%;
+	margin-bottom: 1%;
+}
+
+/* 중앙 하단 외부 링크 네비게이션 */
+.subWrap_2>nav {
+	width: 100%;
+	height: 11%;
+}
+
+/* 하단링크 li 첫번째 요소 오른쪽 마진 제거 */
+.etcList li:nth-last-child(1) {
+	margin-right: 0;
+}
+
+/* 하단 링크 li 마지막 요소 왼쪽 마진 제거 */
+.etcList li:nth-child(1) {
+	margin-left: 0;
+}
+
+.subWrap_2 .navWrap {
+	height: 100%;
+}
+/* 하단 링크 ul 중앙정렬 */
+.navWrap>.etcList {
+	width: 100%;
+	height: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* 하단 링크 li */
+.etcList li {
+	float: left;
+	width: 24.2%;
+	height: 100%;
+	/*     background-color: red; */
+	margin: 0 0.5%;
+}
+
+/* 하단 링크이미지 */
+.etcList img {
+	width: 100%;
+	height: 100%;
+	/* 	height : 60px; */
+}
+
+/***********************/
+/* subWrap_3 (오른쪽) */
+section>.subWrap_3 {
+	float: right;
+	width: 25%;
+	height: 100%;
+}
+
+/* 비교과 프로그램 */
+.subWrap_3>#nonSubject {
+	width: 90%;
+	height: 35%;
+	padding: 4%;
+	margin: 0 2% 2%;
+	overflow : auto;
+}
+
+/* 학교 공지 */
+.subWrap_3>#schoolLink {
+	margin-left: 2%;
+	height: 60%;
+}
+
+/* 학교홈페이지 링크, 외부링크 div */
+.subWrap_3>#schoolLink #exLink {
+	float: left;
+	width: 49%;
+	margin-right: 2%;
+	height: 40%;
+}
+
+/* 학교링크 */
+.subWrap_3>#schoolLink #school {
+	float: left;
+	width: 49%;
+	height: 40%;
+}
+
+/* 영상 */
+#schoolLink>#goVideo {
+	clear: both;
+	float: left;
+	width: 100%;
+	height: 60%;
+	margin: 2% 0;
+}
+
+/* 영상 video 태그 */
+#goVideo vedio {
+	width: 3100px;
+	height: 180px;
+}
+
+
+#noticeBox hr, 
+#nonSubject hr {
+	height : 1px;
+	border : 0px;
+   	background-color: #95a9bb;	
+}
+
+.linkList {
+	display : table;
+	margin: 10px 0;
+}
+.goBoardli {
+	margin: 10px;
+	width : 70%;
+	font-size : 10px;
+    text-align: left;
+    vertical-align: middle;
+    display : table-cell;
+}
+
+
+/*		css변경		*/
+
+/*
++) .goboardli width : auto
+*/
+
+/* 비교과 프로그램 */
+.subWrap_3>#nonSubject {
+	width: 98%;
+    height: 35%;
+    padding: 4% 0;
+    margin: 0 2% 2%;
+}
+
+
+/* 공지 박스 */
+section>.subWrap_1 #noticeBox {
+	clear: both;
+	width: 98%;
+	height: 35%;
+	margin: 2% 0 0;
+	padding: 4% 0;
+	font-size: 20px;
+}
+/* 메인화면 게시판 span */
+#noticeBox span, #nonSubject span {
+ 	text-align: left;
+ 	width : 35%;
+    display : table-cell;
+    font-size: 10px;
+    color : white;
+    vertical-align: middle;
+/*     background-color: red; */
+    padding: 10px 0;
+}
+
+.goBoardli {
+	margin: 10px;
+	width : 65%;
+	font-size : 15px;
+    text-align: left;
+    vertical-align: middle;
+    display : table-cell;
+}
+
+
+#userForm {
+	width : 100%;
+	height : 100%;
+/* 	background-color : red; */
+}
+
+/*로그인 사용자 선택 리스트(li) */
+#loginForm>.list li {
+	float: left;
+	text-align: center;
+	font-size: 10px;
+	width: 60px;
+	height: 74px;
+	margin: 7px;
+}

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="ssm.cm.dao.SchedulNoticeDao">
+	
+	
+	<resultMap type="ssm.cm.vo.SchedulNoticeVO" id="snVO">
+	    <result property="snNo" 			column="SN_NO"/>
+	    <result property="snTitle" 			column="SN_TITLE"/>
+	    <result property="snStartdate" 		column="SN_STARTDATE"/>
+	    <result property="snEnddate" 		column="SN_ENDDATE"/>
+	    <result property="snInsertdate" 	column="SN_INSERTDATE"/>
+	    <result property="snUpdatedate" 	column="SN_UPDATEDATE"/>
+	    <result property="snDeleteyn" 		column="SN_DELETEYN"/>
+	</resultMap>
+	
+	
+	<select id="snlistajax" parameterType="ssm.cm.vo.SchedulNoticeVO" resultMap="snVO">
+		SELECT
+				A.SN_NO, 
+				A.SN_TITLE, 
+				TO_CHAR(A.SN_STARTDATE, 'YYYY-MM-DD') AS SN_STARTDATE,
+				TO_CHAR(A.SN_ENDDATE, 'YYYY-MM-DD') AS SN_ENDDATE,
+				A.SN_FILE 
+		FROM SCHEDULE_NOTICE A
+		WHERE SN_DELETEYN='Y'
+		ORDER BY A.SN_NO
+	</select>
+	
+	
+	<select id="snChaebun" parameterType="ssm.cm.vo.SchedulNoticeVO" resultMap="snVO">
+		
+		SELECT
+		TO_CHAR(NVL(MAX(SUBSTR(SN_NO,-4)),0)+1) SN_NO
+		FROM SCHEDULE_NOTICE
+		
+	</select>
+	
+	
+	<insert id="snInsert" parameterType="ssm.cm.vo.SchedulNoticeVO">
+	
+		INSERT INTO SCHEDULE_NOTICE(SN_NO,SN_TITLE,SN_STARTDATE,SN_ENDDATE,SN_INSERTDATE,SN_DELETEYN)
+		VALUES(#{snNo},#{snTitle},#{snStartdate},#{snEnddate},SYSDATE,'Y')
+	
+	</insert>
+	
+	<update id="snUpdate" parameterType="ssm.cm.vo.SchedulNoticeVO">
+	
+		UPDATE SCHEDULE_NOTICE SET 
+								 SN_TITLE = #{snTitle}
+								,SN_STARTDATE = #{snStartdate}
+								,SN_ENDDATE = #{snEnddate}
+								,SN_UPDATEDATE = SYSDATE
+		WHERE 					 SN_NO = #{snNo}						
+		AND  					 SN_DELETEYN = 'Y'
+	</update>
+	
+	<update id="snDelete" parameterType="ssm.cm.vo.SchedulNoticeVO">
+	
+		UPDATE SCHEDULE_NOTICE SET 
+								 SN_UPDATEDATE = SYSDATE
+								,SN_DELETEYN = 'N' 
+		WHERE 					 SN_NO = #{snNo}						
+		AND  					 SN_DELETEYN = 'Y'
+	</update>
+	
+	
+</mapper>

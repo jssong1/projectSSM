@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.br.dao.Non_ApplicationDao">
+	<resultMap type="ssm.br.vo.Non_ApplicationVO"  id="Non_ApplicationVO">
+		<result property="naNo"                column="NA_NO"/>
+		<result property="npNo"                column="NP_NO"/>
+		<result property="ssNo"                column="SS_NO"/>
+		<result property="naContents"          column="NA_CONTENTS"/>
+		<result property="naFile"              column="NA_FILE"/>
+		<result property="naInsertdate"        column="NA_INSERTDATE"/>
+		<result property="naUpdatedate"        column="NA_UPDATEDATE"/>
+		<result property="naDeleteyn"          column="NA_DELETEYN"/>
+		<result property="naStatus"            column="NA_STATUS"/>
+		<result property="npTitle"             column="NP_TITLE"/>
+		<result property="ssEmail"             column="SS_EMAIL"/>
+		<result property="ssName"              column="SS_NAME"/>
+	</resultMap>
+	
+	<select id="chaeBun" parameterType="ssm.br.vo.Non_ApplicationVO" resultType="String">
+		SELECT NVL(MAX(SUBSTR(NA_NO,-4)),0)+1 AS NA_NO FROM NON_APPLICATION
+	</select>
+	<select id="non_ApplicationList" parameterType="ssm.br.vo.Non_ApplicationVO" resultMap="Non_ApplicationVO">
+		SELECT 
+		A.NA_NO,
+		B.NP_NO,
+        B.NP_TITLE,
+        TO_CHAR(A.NA_INSERTDATE,'YYYY-MM-DD') NA_INSERTDATE,
+        A.NA_STATUS
+		FROM NON_APPLICATION A,NONPROGRAM B
+		WHERE A.NP_NO = B.NP_NO
+		AND SS_NO=#{ssNo}
+		AND A.NA_DELETEYN='Y'
+		ORDER BY A.NA_INSERTDATE DESC
+	</select>
+	
+ 	<select id="non_ApplicationDetail" parameterType="ssm.br.vo.Non_ApplicationVO" resultMap="Non_ApplicationVO">
+		SELECT *
+		FROM
+		(SELECT
+		B.SS_NO,
+		B.SS_EMAIL,
+		B.SS_NAME,
+		(SELECT NA_NO FROM NONPROGRAM A, NON_APPLICATION B WHERE A.NP_NO=B.NP_NO AND B.SS_NO=#{ssNo} AND B.NP_NO=#{npNo}) NA_NO,
+		(SELECT NP_TITLE FROM NONPROGRAM A, NON_APPLICATION B WHERE A.NP_NO=B.NP_NO AND B.SS_NO=#{ssNo} AND B.NP_NO=#{npNo}) NP_TITLE,
+		(SELECT B.NA_CONTENTS FROM NONPROGRAM A, NON_APPLICATION B WHERE A.NP_NO=B.NP_NO AND B.SS_NO=#{ssNo} AND B.NP_NO=#{npNo}) NA_CONTENTS,
+		(SELECT B.NA_FILE FROM NONPROGRAM A, NON_APPLICATION B WHERE A.NP_NO=B.NP_NO AND B.SS_NO=#{ssNo} AND B.NP_NO=#{npNo}) NA_FILE,
+		(SELECT B.NA_DELETEYN FROM NONPROGRAM A, NON_APPLICATION B WHERE A.NP_NO=B.NP_NO AND B.SS_NO=#{ssNo} AND B.NP_NO=#{npNo}) NA_DELETEYN
+		FROM S_MEMBER B
+		WHERE B.SS_NO=#{ssNo})ABC
+		WHERE ABC.NA_DELETEYN = 'Y'
+	</select>
+	
+	   <insert id="non_ApplicationInsert" parameterType="ssm.br.vo.Non_ApplicationVO">
+      INSERT INTO NON_APPLICATION(
+               NA_NO,
+               NP_NO,
+               SS_NO,
+               NA_CONTENTS,
+               <if test="naFile!='' and naFile!=null">
+               NA_FILE,
+               </if>
+               NA_INSERTDATE,
+               NA_UPDATEDATE,
+               NA_DELETEYN,
+               NA_STATUS)
+      VALUES(
+               #{naNo},
+               #{npNo},
+               #{ssNo},
+               #{naContents},
+               <if test="naFile!='' and naFile!=null">
+               #{naFile},
+               </if>
+               SYSDATE,
+               SYSDATE,
+               'Y',
+               '01')
+      
+   </insert>
+	<update id="non_ApplicationUpdate" parameterType="ssm.br.vo.Non_ApplicationVO">
+	UPDATE NON_APPLICATION
+	SET NA_CONTENTS=#{naContents}
+	<if test="naFile!='' and naFile!=null">
+		,NA_FILE=#{naFile}
+	</if>
+	WHERE NA_NO=#{naNo}
+	</update>
+	
+	<!-- 삭제쿼리 -->
+	<update id="non_ApplicationDelete" parameterType="ssm.br.vo.Non_ApplicationVO">
+		UPDATE NON_APPLICATION
+		SET NA_DELETEYN='N'
+		WHERE NA_NO=#{naNo}
+	</update>
+	
+	<!-- 선생님기준 신청자리스트뽑기-->
+	<select id="teacherApplicationList" parameterType="ssm.br.vo.Non_ApplicationVO" resultMap="Non_ApplicationVO">
+	SELECT 
+        A.NP_NO,
+        A.SS_NO,
+        (SELECT SS_NAME FROM S_MEMBER B WHERE A.SS_NO = B.SS_NO) SS_NAME,
+        (SELECT B.SS_EMAIL FROM S_MEMBER B WHERE A.SS_NO = B.SS_NO) SS_EMAIL,
+        A.NA_CONTENTS,
+        A.NA_FILE,
+        A.NA_STATUS,
+        A.NA_NO
+	FROM NON_APPLICATION A
+	WHERE NP_NO=#{npNo}
+	</select>
+	
+	<update id="approval" parameterType="ssm.br.vo.Non_ApplicationVO">
+		UPDATE NON_APPLICATION
+		SET NA_STATUS='04'
+		WHERE NA_NO=#{naNo}
+	</update>
+	
+	<update id="approvalCancel" parameterType="ssm.br.vo.Non_ApplicationVO">
+		UPDATE NON_APPLICATION
+		SET NA_STATUS='01'
+		WHERE NA_NO=#{naNo}
+	</update>
+</mapper>

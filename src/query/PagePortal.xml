@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.mainPg.dao.PagePortalDAO">
+
+	
+	<resultMap type="ssm.mainPg.vo.PagePortalVO" id="npPortalList">
+		<result property="npTitle" column="NP_TITLE"/>
+		<result property="npNo" column="NP_NO"/>
+		<result property="npPsdate" column="NP_PSDATE"/>
+	</resultMap>
+	
+	<resultMap type="ssm.mainPg.vo.PagePortalVO" id="nbPortalList">
+		<result property="nbTitle" column="NB_TITLE"/>
+		<result property="nbNo" column="NB_NO"/>
+		<result property="nbInsertdate" column="NB_INSERTDATE"/>
+	</resultMap>
+	
+	<select id="npPortal" parameterType="ssm.mainPg.vo.PagePortalVO" resultMap = "npPortalList">
+		SELECT ROWNUM, NP_TITLE, NP_NO
+		      ,TO_CHAR(NP_PSDATE, 'YYYY-MM-DD') AS NP_PSDATE
+		FROM (
+		    SELECT  NP_TITLE, NP_NO , NP_PSDATE
+		    FROM NONPROGRAM 
+		    WHERE NP_DELETEYN = 'Y'
+		    ORDER BY NP_NO DESC)
+		WHERE ROWNUM BETWEEN 1 AND 5
+	</select>
+	
+	<select id="nbPortal" parameterType="ssm.mainPg.vo.PagePortalVO" resultMap = "nbPortalList">
+		SELECT ROWNUM, NB_NO, RPAD(TRIM(SUBSTR(NB_TITLE, 1, 7)), 17, '.') AS NB_TITLE
+		      ,TO_CHAR(NB_INSERTDATE, 'YYYY-MM-DD') AS NB_INSERTDATE
+		FROM (
+		    SELECT NB_NO, NB_TITLE, NB_INSERTDATE 
+		    FROM NOTICE_BOARD 
+		    WHERE NB_DELETEYN = 'Y'
+		    ORDER BY NB_NO DESC)
+		WHERE ROWNUM BETWEEN 1 AND 5
+	</select>
+</mapper>

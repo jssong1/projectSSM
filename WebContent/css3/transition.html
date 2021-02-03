@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Transition</title>
+		 <!-- 
+		 	transition은 애니메이션으로 프로퍼티 값을 변화시킬 수 있는 프로퍼티 
+			transition:속성명 전환시간 가속도설정 지연시간;	 
+				 
+			transform:(변형) : 이차원에서 요소를 변형시키는 프로퍼티
+			변형값에는 translate() 이동함수, scale() 축소함수, 
+			        rotate() 회전함수, skew() 경사함수 
+		  -->
+		<style type="text/css">
+			div { 
+				width:400px;
+			    height:400px;
+			    background:red;
+			    margin:100px auto;			     
+			    transition:all 1s ease 0s;
+			}
+			div:hover {
+				transform:rotate(45deg);
+			    background:blue;
+			}      
+		</style>
+	</head>
+	<body>
+		<div>transition</div>
+	</body>
+</html>

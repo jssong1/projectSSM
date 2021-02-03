@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cg.dao.VisitCounsel_RsvMapper">
+   <resultMap type="ssm.mi.vo.TMemberVO" id="TMemberVO">
+      <result property="ttNo" column="TT_NO" />
+      <result property="ttName" column="TT_NAME" />
+      <result property="ttAuthority" column="TT_AUTHORITY" />
+   </resultMap>
+   <resultMap type="ssm.mi.vo.SMemberVO" id="SMemberVO">
+      <result property="ssNo" column="SS_NO" />
+      <result property="ssName" column="SS_NAME" />
+      <result property="ssGrade" column="SS_GRADE"/>
+   </resultMap>
+   <resultMap type="ssm.cg.vo.Visit_CommentVO" id="Visit_CommentVO">
+      <result property="vcComments"  column="VC_COMMENTS" />
+   </resultMap>
+   <resultMap type="ssm.cg.vo.VisitCounsel_RsvVO" id="rsvVO">
+      <result property="vrNo"  column="VR_NO" />
+      <result property="ssNo"  column="SS_NO" />
+      <result property="ttNo" column="TT_NO" />
+      <result property="vrStatus" column="VR_STATUS" />
+      <result property="vrTime" column="VR_TIME"/>
+      <result property="vrDate" column="VR_DATE" />      
+      <result property="vrYN" column= "VR_YN"/>
+      <result property="vrInsertdate" column="VR_INSERTDATE"/>
+      <result property="vrDeleteyn" column="VR_DELETEYN"/>
+      <result property="vrField" column="VR_FIELD"/>
+      <result property="vrContents" column="VR_CONTENTS"/>
+      <collection property="tmemberVO" resultMap="TMemberVO"/>
+      <collection property="smemberVO" resultMap="SMemberVO"/>
+      <collection property="vcCommentVO" resultMap="Visit_CommentVO"/>
+   </resultMap>
+   
+   <select id="vcMineList" parameterType="ssm.cg.vo.VisitCounsel_RsvVO" resultMap="rsvVO">
+      /*Mapper - "vcRsvList"*/
+       SELECT A.VR_NO VR_NO, (SELECT E.NAME FROM CODE_TABLE E WHERE B.TT_AUTHORITY=E.CODE) TT_AUTHORITY
+      , B.TT_NAME TT_NAME,C.SS_NAME SS_NAME
+      , (SELECT E.NAME FROM CODE_TABLE E WHERE A.VR_FIELD=E.CODE) VR_FIELD
+      , (SELECT TO_CHAR(A.VR_DATE, 'YYYY-MM-DD') FROM DUAL) VR_DATE
+       , D.TIME VR_TIME, A.VR_INSERTDATE VR_INSERTDATE
+      ,(SELECT E.NAME FROM CODE_TABLE E WHERE A.VR_STATUS=E.CODE) VR_STATUS
+      ,A.VR_CONTENTS
+      ,NVL((SELECT F.VC_COMMENTS FROM VISIT_COMMENT F WHERE A.VR_NO=F.VR_NO AND F.VC_DELETEYN='Y'), '-' )VC_COMMENTS
+      ,(SELECT E.NAME FROM CODE_TABLE E WHERE C.SS_GRADE=E.CODE) SS_GRADE
+      ,  B.TT_AUTHORITY TT_AUTHORITY
+      FROM VISITCOUNSEL_RSV A, T_MEMBER B,S_MEMBER C,CODE_VISITTIMETABLE D
+      WHERE A.TT_NO=B.TT_NO 
+      AND A.SS_NO=C.SS_NO 
+      AND A.VR_TIME=D.TIMENO
+      AND A.SS_NO=#{ssNo,jdbcType=VARCHAR}
+      ORDER BY VR_NO DESC
+   </select>
+ 
+    <select id="vcRsvList" parameterType="ssm.cg.vo.VisitCounsel_RsvVO" resultMap="rsvVO">
+   /*Mapper - "vcRsvList"*/
+      SELECT  C.TIME VR_TIME, A.TT_NO TT_NO, A.ED_DATE VR_DATE
+            , B.SS_NO SS_NO, B.VR_STATUS VR_STATUS
+      FROM EDU_OPEN_TIME A 
+      LEFT JOIN VISITCOUNSEL_RSV B
+              ON(A.TT_NO=B.TT_NO
+              AND A.ED_DATE =B.VR_DATE
+              AND A.ED_TIMENO=B.VR_TIME
+              AND B.VR_DELETEYN='Y')
+      INNER JOIN CODE_VISITTIMETABLE C
+          ON(A.ED_TIMENO=C.TIMENO)
+       WHERE A.TT_NO = #{ttNo,jdbcType=VARCHAR}
+      ORDER BY VR_DATE, VR_TIME
+   </select>
+   
+   <select id="vrChaebun"  resultMap="rsvVO">
+    /* Mapper - vrChaebun */
+       SELECT CASE WHEN NVL(MAX(SUBSTR(VR_NO,-4)),0) IS NULL THEN 1
+        ELSE NVL(MAX(SUBSTR(VR_NO,-4)),0)+1 END AS VR_NO FROM VISITCOUNSEL_RSV
+   </select>
+   
+   <insert id="insertVC" parameterType="ssm.cg.vo.VisitCounsel_RsvVO">
+      /*Mapper - insertVC */
+         INSERT INTO VISITCOUNSEL_RSV (VR_NO, SS_NO,TT_NO,VR_STATUS,
+         VR_TIME,VR_DATE,VR_FIELD,VR_CONTENTS,VR_INSERTDATE,VR_DELETEYN)
+         VALUES (#{vrNo},#{ssNo},#{ttNo},'01'
+         ,(SELECT TIMENO FROM CODE_VISITTIMETABLE WHERE TIME=#{vrTime})
+         ,#{vrDate},#{vrField},#{vrContents},SYSDATE,'Y')
+   </insert>
+   <select id="userGrade"  resultType="String">
+    /* Mapper - userGrade */
+      SELECT DISTINCT TABLE_NAME AS SS_NO
+      FROM ALL_TAB_COLUMNS
+      WHERE UPPER(TABLE_NAME) LIKE '%'||(SELECT SS_GRADE FROM S_MEMBER WHERE SS_NO=#{ssNo,jdbcType=VARCHAR})||'%'
+   </select>
+   
+   <select id="ssNoInfo" parameterType="String" resultMap="rsvVO">
+   /*Mapper - "ssNoInfo"*/
+      SELECT B.SS_NO SS_NO,A.SS_GRADE SS_GRADE,A.SS_CLASS SS_CLASS,A.SS_NUM SS_NUM,A.TT_NO TT_NO,A.DELETEYN, B.SS_NAME SS_NAME, C.TT_NAME TT_NAME
+      FROM(          SELECT SS_NO SS_NO,FM_GRADE SS_GRADE,FM_CLASS SS_CLASS,FM_NUM SS_NUM,TT_NO,DELETEYN FROM FM_MEMBER WHERE DELETEYN='Y'
+              UNION SELECT SS_NO SS_NO,JR_GRADE SS_GRADE,JR_CLASS SS_CLASS,JR_NUM SS_NUM,TT_NO,DELETEYN FROM JR_MEMBER WHERE DELETEYN='Y'
+              UNION SELECT SS_NO SS_NO,SR_GRADE SS_GRADE,SR_CLASS SS_CLASS,SR_NUM SS_NUM,TT_NO,DELETEYN FROM SR_MEMBER WHERE DELETEYN='Y'
+      ) A, S_MEMBER B, T_MEMBER C
+      WHERE B.SS_NO = A.SS_NO
+      AND C.TT_NO = A.TT_NO
+      AND B.SS_NO=#{ssNo,jdbcType=VARCHAR}   
+   </select>
+   
+   <update id="cancelBooking" parameterType="ssm.cg.vo.VisitCounsel_RsvVO">
+      /*Mapper - cancelBooking*/
+      UPDATE VISITCOUNSEL_RSV
+      SET 
+         VR_DELETEYN = 'N'
+         ,VR_STATUS='03'
+      WHERE VR_NO =#{vrNo}
+      AND VR_DELETEYN = 'Y'
+   </update>
+   
+<!-- 
+   <select id="vcRsvIform" parameterType="ssm.mi.member.vo.VisitCounsel_RsvVO" resultMap="rsvVO">
+   /*Mapper - "vcRsvList"*/
+
+
+   SELECT E.TT_NAME TT_NO, A.VR_DATE VR_DATE, D.SS_NAME SS_NO, C.NAME VR_STATUS
+        ,A.VR_DAY VR_DAY, B.TIME VR_TIME
+   FROM VISITCOUNSEL_RSV A, CODE_VISITTIMETABLE B, CODE_TABLE C ,S_MEMBER D, T_MEMBER E
+   WHERE A.TT_NO=#{ttNo,jdbcType=VARCHAR}
+   AND A.SS_NO=#{ssNo,jdbcType=VARCHAR}
+    AND B.TIME=#{vrTime,jdbcType=VARCHAR}
+    AND A.VR_TIME= B.TIMENO
+    AND A.VR_STATUS=C.CODE
+    AND A.SS_NO=D.SS_NO
+    AND A.TT_NO=E.TT_NO
+    
+   </select> -->
+   
+   
+   
+</mapper>

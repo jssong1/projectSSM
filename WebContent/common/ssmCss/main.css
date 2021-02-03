@@ -1,0 +1,154 @@
+
+/* ============================ 배경색 */
+
+html {
+	background-color : #D8E6E7;
+}
+
+#goLink li, #noticeBoard, 
+#nsBoard, #goVideo {
+	background-color : #77AF9C;
+}	
+
+#loginForm>a {
+	background-color : #F16B6F;	
+}
+
+#loginBox {
+	background-color : #285943;
+}
+
+/* 배경색 ============================*/	
+
+
+/* 메인이미지 전체 div */
+.wrapImg {
+	float : left;
+}
+
+
+section {
+	height: 605px;
+    width: 1200px;
+}
+
+
+/* 메인이미지 */
+section>.wrapImg .mainImg {
+	float: left;
+    width: 579px;
+    height: 610px;
+    margin: 5px;
+    padding: 5px;
+}
+
+/* 로그인 박스, 학교홈페이지 링크박스 div */
+section>.wrapContents .loginBox, .linkBox {
+	float : left;
+	width : 299.5px;
+	height : 314px;
+}
+
+/* 로그인 박스 */
+#loginBox {
+	height : 294px;
+	margin : 5px;
+	padding : 5px;
+}
+
+/*로그인 사용자 선택 리스트(ul 가운데 정렬) */
+#loginForm>.list{
+	display : table;
+	margin-left : auto;
+	margin-right : auto;
+}
+
+/*로그인 사용자 선택 리스트(li) */
+#loginForm>.list li {
+    float: left;
+    text-align: center;
+    font-size: 10px;
+    width : 64px;
+    height : 94px;
+    margin: 10px;
+}
+
+/* 사용자 선택 라디오 버튼 */
+#loginForm>.list .wrapRadio {
+	display : block;
+	margin-top : 10px; 
+	
+}
+
+/* 로그인 버튼 */
+#loginForm>a{
+	color : white;
+	text-align : center;
+	margin : 5px;
+	display : inline-block;
+	padding : 15px 0px;
+	width : 256px;
+	font-weight : bold;
+}
+
+/* 로그인 입력창 */
+#loginForm>#loginId, #loginPw {
+	width : 250px;
+	height : 40px;
+	margin : 5px;
+	align : center;
+}
+
+/* 링크1, 학교홈페이지 링크 */
+#goLink>.list li{
+	/*background-color : #368B7C;*/
+	text-align : center;
+	float : left;
+	margin : 5px;
+	width : 139.7px;
+	padding : 50px 0;
+	text-align : center;
+}
+
+/* 영상 박스 */
+.linkBox>#goVideo{
+	float : left;
+	margin : 5px;
+	width : 289.5px;
+	height : 174.5px;
+}
+
+/* 학교공지, 비교과 프로그램 공지 박스 */
+section>.wrapContents .notice .schoolNotice,.non-subNotice{
+	float : left;
+	width : 299.5px;
+	height : 241px;
+}
+
+#noticeBoard, #nsBoard{
+	height: 221px;
+    padding: 5px;
+    margin: 5px;
+}
+
+
+/* 기타 이동 링크 */
+/* nav <li> */
+section>.wrapContents nav .outLink {
+	float : left;
+	width : 595px;
+	height : 75px;
+}
+.etcList li {
+    float: left;
+    width: 143.7px;
+    height: 65px;
+    margin: 5px 0px 5px 5px;
+}
+.etcList img {
+	width : 143.7px;
+}
+.menuList a:hover {
+	background-color : #E6E1E2;
+	color : #425A9F;
+}

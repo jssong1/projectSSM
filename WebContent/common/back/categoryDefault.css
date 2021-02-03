@@ -1,0 +1,236 @@
+/* section, nav 영역 전체 div */
+.subWrap {
+   width : 100%;
+   height : 65%;
+/*    background-color : green; */
+}
+
+
+.subWrap>nav {
+   width : 18%;
+}
+
+nav>.wrapSide {
+   float: left;
+   width : 100%
+}
+
+#sideLink {
+    width: 100%;
+    height: 590px;
+/*     background-color: #181842; */
+}
+
+/* 사용자 이미지 div */
+#userImg {
+    width: 90%;
+    height: 32%;
+    padding: 4%;
+    margin-right: 2%;
+    background-color: #2b475e;
+    border-radius: 10px;
+}
+
+h2 {
+   margin : 10px;   
+}
+
+/* 사용자 이미지 img태그 */
+#userImg img{
+    width: 80%;
+    height: 60%;
+    /* margin-right: 2%; */
+    margin: 10px 0;
+/*     display: inline-block; */
+
+}
+
+#userImg p {
+   margin : 0;
+}
+.menuTit {
+   width: 190px;
+    margin: 0px 10px 10px;
+    padding: 10px 0px;
+    background-color: red;
+}
+
+.sideList{
+   display: table;
+    width: 100%;
+    height: 65%;
+/*     margin: 5px auto; */
+/*     background-color: blue; */
+}
+
+.i a {
+   color : white;
+   font-weight : bold;
+}
+
+.sideList .i {
+    font-size: 3px;
+    width: 96%;
+    line-height: 30px;
+    background-color: cadetblue;
+    padding: 2%;
+    margin : 2% 0;
+    border-radius: 10px;
+}
+
+.subList li{
+    width: 100%;
+    line-height: 40px;
+    padding-left: 2%;
+    /* background-color: #95a9bb; */
+/*     border-bottom: 1px solid #95a9bb; */
+/*     margin: 1% 0; */
+    text-align: left;
+}
+
+.subList a {
+	color : white;
+}
+
+#sideLink>.sideList .comm {
+   background-color : grey;
+}
+
+#containerTit {
+   position:relative;
+   float: left;
+    width: 80%;
+    height: 9%;
+    margin-bottom: 5px;
+    background-color: #003a70;
+    text-align:left;
+     text-indent: 20px;
+     line-height: 50px;
+}
+/*background:#394264;
+   height:54px;
+   margin-right:5px;
+      margin-bottom:10px;
+      margin-left:5px;
+   font-size: 28px;
+    line-height: 55px;
+    text-indent: 20px;
+    font-weight: bold;
+    color: #fff;
+    
+    #content{position:relative; margin:0 0 0 0px; padding:0 0 70px 0; min-height:600px; min-width:320px;}
+   #content .tit{position:relative; width:100%; text-align:left; border-bottom:2px solid #2e66a9; padding:30px 0 0;}
+   #content .tit p{position:absolute; right:0; bottom:8px;}
+    */
+
+#containerTit h1{font-size:25px; color:#ffffff; letter-spacing:-0.05em; margin:0 0 15px;}
+#containerTit a.on{color:#2465ca; text-decoration:none; font-weight:bold;}
+
+#containerTit p {
+   padding : 0 10px;
+   text-align : left;
+   position:absolute; right:0;
+}
+
+.userLink {
+   width : 100%;
+}
+
+.userLink li {
+   width: 90%;
+   line-height: 16px;
+   background-color: #fead09;
+   margin: 6px auto;
+   border-radius: 4px;
+}
+
+/*		변경		*/
+
+.subWrap>section {
+    float: right;
+    width: 81%;
+    margin-left: 1%;
+    height: auto;
+    /* background-color: aliceblue; */
+}
+
+section>.container {
+/* position: absolute; */
+    overflow: auto;
+    width: 96%;
+    height: 100%;
+    padding: 0 2%;
+/*     border-top: 1px solid #95a9bb; */
+    background-color: #2b475e;
+}
+
+.subList{;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1px;
+    background: #2b475e;
+    border-radius: 10px;
+}
+
+/* 소제목 */
+
+.container #tit { 	
+	color : black;
+	position: relative;
+    width: 100%;
+    text-align: left;
+    border-bottom: 2px solid white;
+    padding: 30px 0 0;
+}
+
+.container #tit h1 {
+	text-indent: 8px;
+    font-family: "나눔고딕", NanumGothic, "돋움", dotum, sans-serif;
+    font-size: 25px;
+    color: #fff;
+    letter-spacing: -0.05em;
+    margin: 0 0 10px;
+}
+
+.container #tit p {
+    position: absolute;
+    right: 0;
+    bottom: 16px
+}
+
+#tit a {
+	font-size : 13px;
+	color : darkgray;
+}
+
+#tit a.on {
+	color: darkcyan;
+    font-weight: bold;
+} 
+
+/* 소제목 */
+
+#content .tit {
+    position: relative;
+    width: 100%;
+    text-align: left;
+    border-bottom: 2px solid #2e66a9;
+    padding: 15px 0 0;
+}
+/* 상담 게시판 버튼 */
+.board_btn span{
+	background: #2e66a9;
+    width: 120px;
+    font-size: 1.1em;
+    text-align: center;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+
+#sideDiv {
+    width: 98%;
+    margin-top : 2%;
+/*     padding: 4%; */
+}

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cd.dao.TestTeacherDao">
+
+      <!-- 반장님꺼 사용x -->
+      <resultMap type="ssm.cd.vo.TestTeacherVO"  id="TestTeacherVO">
+      <result property="ssNo"          column="SSNO"/>
+      <result property="ssGrade"          column="SSGRADE"/>
+      <result property="ssName"          column="SSNAME"/>
+      <result property="ssClass"          column="SSCLASS"/>
+      <result property="ssNum"          column="SSNUM"/>
+      <result property="ja_Url"          column="JAURL"/>
+      <result property="ji_Url"          column="JIURL"/>
+      <result property="ih_Url"          column="IHURL"/>
+      <result property="va_Url"          column="VAURL"/>
+      <result property="cm_Url"          column="CMURL"/>
+      <result property="pageNo"         column="PAGENO"/>
+      <result property="listSize"         column=""/>
+      <result property="totalCount"         column="TOTALCOUNT"/>   
+   </resultMap>
+   
+   <!-- 마이리스트에 사용 -->
+   <resultMap type="ssm.mi.vo.TMemberVO" id="TMemberVO">
+       <result property="ttNo"          column="TT_NO"/>
+       <result property="ttGrade"          column="TT_GRADE"/>
+       <result property="ttClass"          column="TT_CLASS"/>
+   </resultMap>
+   
+   <!-- 마이스튜던트에 사용 -->
+   <resultMap type="ssm.mi.vo.SMemberVO" id="smVO">
+       <result property="ssName"                   column="SS_NAME"/>
+      <result property="ssImage"                  column="SS_IMAGE"/>
+      <collection property="fmMembervo"             resultMap="FmmemberVO"/> <!-- fm jr sr 세개중 선택된데이터 1개를 받아가지만 fmvo에 넣어가서 꺼내서 사용하겠다 -->
+      <collection property="cdvaluevo"    resultMap="CdvalueVO"/>
+   </resultMap>
+   
+   
+   <!-- 콜렉션인애들 -->
+   
+   <resultMap type="ssm.mi.vo.FmmemberVO" id="FmmemberVO">
+      <result property="fmNum"          column="FM_NUM"/>
+   </resultMap>
+   
+   <resultMap type="ssm.cd.vo.CdvalueVO" id="CdvalueVO">
+      <result property="ja_Url"          column="JAURL"/>
+      <result property="ji_Url"          column="JIURL"/>
+      <result property="ih_Url"          column="IHURL"/>
+      <result property="va_Url"          column="VAURL"/>
+      <result property="cm_Url"          column="CMURL"/>
+   </resultMap>
+   
+   
+   
+   
+   <!-- 리스트가져오기 -->
+   <select id= "listStudent" parameterType="ssm.cd.vo.TestTeacherVO" resultMap="TestTeacherVO">
+   SELECT
+      *
+   FROM (SELECT
+     A.SS_NO  SSNO
+    ,(SELECT E.NAME FROM CODE_TABLE E WHERE E.CODE=A.SS_GRADE)  SSGRADE
+    ,A.SS_NAME  SSNAME
+    ,(CASE 
+        WHEN A.SS_GRADE='FM'  THEN (SELECT AA.FM_CLASS FROM FM_MEMBER AA, S_MEMBER BB WHERE AA.SS_NO = BB.SS_NO AND AA.SS_NO=A.SS_NO)
+        WHEN A.SS_GRADE='JR'  THEN (SELECT AA.JR_CLASS FROM JR_MEMBER AA, S_MEMBER BB WHERE AA.SS_NO = BB.SS_NO AND AA.SS_NO=A.SS_NO)
+        WHEN A.SS_GRADE='SR'  THEN (SELECT AA.SR_CLASS FROM SR_MEMBER AA, S_MEMBER BB WHERE AA.SS_NO = BB.SS_NO AND AA.SS_NO=A.SS_NO)
+    END) AS SSCLASS 
+    ,(CASE 
+        WHEN A.SS_GRADE='FM'  THEN (SELECT AA.FM_NUM FROM FM_MEMBER AA, S_MEMBER BB WHERE AA.SS_NO = BB.SS_NO AND AA.SS_NO=A.SS_NO)
+        WHEN A.SS_GRADE='JR'  THEN (SELECT AA.JR_NUM FROM JR_MEMBER AA, S_MEMBER BB WHERE AA.SS_NO = BB.SS_NO AND AA.SS_NO=A.SS_NO)
+        WHEN A.SS_GRADE='SR'  THEN (SELECT AA.SR_NUM FROM SR_MEMBER AA, S_MEMBER BB WHERE AA.SS_NO = BB.SS_NO AND AA.SS_NO=A.SS_NO)
+    END) AS SSNUM
+    ,(SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JA' AND A.SS_GRADE=B.CD_GRADE) JAURL
+    ,(SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JI' AND A.SS_GRADE=B.CD_GRADE) JIURL
+    ,(SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='IH' AND A.SS_GRADE=B.CD_GRADE) IHURL
+    ,(SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='VA' AND A.SS_GRADE=B.CD_GRADE) VAURL
+    ,(SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='CM' AND A.SS_GRADE=B.CD_GRADE) CMRUL
+    ,CEIL(ROW_NUMBER() OVER(ORDER BY A.SS_NO)/#{listSize}) PAGENO
+    ,COUNT(A.SS_NO) OVER() AS TOTALCOUNT
+     FROM S_MEMBER A 
+     <if test="ssGrade == 'FM' ">
+        ,FM_MEMBER B
+     </if>
+     <if test="ssGrade == 'JR' ">
+      ,JR_MEMBER B     
+     </if>
+     <if test="ssGrade == 'SR' ">
+      ,SR_MEMBER B     
+     </if>
+      WHERE A.SS_DELETEYN = 'Y'
+      AND A.SS_AUTHORITY = '1'
+     <if test="ssGrade!='' and ssGrade!= null ">
+      AND A.SS_GRADE=#{ssGrade}
+   </if>
+    <if test="ssGrade == 'FM' and ssClass != '' ">
+        AND B.FM_CLASS=#{ssClass}
+     </if>
+     <if test="ssGrade == 'JR' and ssClass != '' ">
+      AND B.JR_CLASS=#{ssClass}     
+     </if>
+     <if test="ssGrade == 'SR' and ssClass != '' ">
+      AND B.SR_CLASS=#{ssClass}
+     </if>
+     <if test="ssName!='' and ssGrade!= null ">
+      AND A.SS_NAME LIKE '%'|| #{ssName} ||'%'
+     </if>
+   )ABC
+   WHERE ABC.PAGENO = #{pageNo}
+
+   </select>
+   <select id= "myclass" parameterType="ssm.mi.vo.TMemberVO" resultMap="TMemberVO">
+   SELECT
+      TT_GRADE,
+      TT_CLASS
+   FROM
+      T_MEMBER
+   WHERE   TT_NO =    #{ttNo}   
+   </select>
+   
+   <select id= "mystudent" parameterType="ssm.mi.vo.TMemberVO" resultMap="smVO">
+   
+   SELECT     
+                A.FM_NUM,          
+                B.SS_NAME,
+                B.SS_IMAGE,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JA' AND A.FM_GRADE=B.CD_GRADE),'데이터없음') as JAURL,
+                NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JI' AND A.FM_GRADE=B.CD_GRADE),'데이터없음') as JIURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='IH' AND A.FM_GRADE=B.CD_GRADE),'데이터없음') as IHURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='VA' AND A.FM_GRADE=B.CD_GRADE),'데이터없음') as VAURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='CM' AND A.FM_GRADE=B.CD_GRADE),'데이터없음') as CMURL
+   FROM
+                FM_MEMBER A,
+                S_MEMBER B
+   WHERE       A.FM_GRADE    = #{ttGrade}
+   AND           A.FM_CLASS  = #{ttClass}
+   AND          A.SS_NO = B.SS_NO
+   
+   UNION ALL  
+   
+   SELECT        
+                A.JR_NUM,          
+                B.SS_NAME,
+                B.SS_IMAGE,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JA' AND A.JR_GRADE=B.CD_GRADE),'데이터없음') as JAURL,
+                NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JI' AND A.JR_GRADE=B.CD_GRADE),'데이터없음') as JIURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='IH' AND A.JR_GRADE=B.CD_GRADE),'데이터없음') as IHURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='VA' AND A.JR_GRADE=B.CD_GRADE),'데이터없음') as VAURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='CM' AND A.JR_GRADE=B.CD_GRADE),'데이터없음') as CMURL
+   FROM
+                JR_MEMBER A,
+                S_MEMBER B
+   WHERE      A.JR_GRADE    = #{ttGrade}
+   AND           A.JR_CLASS  = #{ttClass}
+   AND           A.SS_NO = B.SS_NO
+   
+   UNION ALL  
+   
+   SELECT        
+                A.SR_NUM,          
+                B.SS_NAME,
+                B.SS_IMAGE,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JA' AND A.SR_GRADE=B.CD_GRADE),'데이터없음') as JAURL,
+                NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='JI' AND A.SR_GRADE=B.CD_GRADE),'데이터없음') as JIURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='IH' AND A.SR_GRADE=B.CD_GRADE),'데이터없음') as IHURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='VA' AND A.SR_GRADE=B.CD_GRADE),'데이터없음') as VAURL,
+             NVL((SELECT CD_URL  FROM CAREER_DESIGN B WHERE A.SS_NO = B.SS_NO  AND CD_VALUE='CM' AND A.SR_GRADE=B.CD_GRADE),'데이터없음') as CMURL
+   FROM
+                SR_MEMBER A,
+                S_MEMBER B
+   WHERE       A.SR_GRADE    = #{ttGrade}
+   AND           A.SR_CLASS  = #{ttClass}
+   AND           A.SS_NO = B.SS_NO
+
+   
+   
+   </select>
+   
+</mapper>

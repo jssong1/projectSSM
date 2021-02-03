@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ssm.cm.dao.NoticeBoardDao">
+	
+	<resultMap type="ssm.mi.vo.TMemberVO" id="TMemberVO">
+	    <result property="ttNo" 			column="TT_NO"/>
+	    <result property="ttName" 			column="TT_NAME"/>
+	</resultMap>
+	
+	<resultMap type="ssm.cm.vo.NoticeBoardVO" id="nbVO">
+	    <result property="nbNo" 			column="NB_NO"/>
+	    <result property="nbTitle" 			column="NB_TITLE"/>
+	    <result property="nbContents" 		column="NB_CONTENTS"/>
+	    <result property="ttNo" 			column="TT_NO"/>
+	    <result property="nbFile" 			column="NB_FILE"/>
+	    <result property="nbInsertdate" 	column="NB_INSERTDATE"/>
+	    <result property="nbUpdatedate" 	column="NB_UPDATEDATE"/>
+	    <result property="nbDeleteyn" 		column="NB_DELETEYN"/>
+	    <result property="nbViews" 			column="NB_VIEWS"/>
+	    <result property="pageNo"		    column="PAGENO"/>
+		<result property="listSize"		    column=""/>
+		<result property="totalCount"		column="TOTALCOUNT"/>
+	    <collection property="tMembervo" 	resultMap="TMemberVO"/>
+	</resultMap>
+	
+	<select id ="nblist" parameterType="ssm.cm.vo.NoticeBoardVO" resultMap="nbVO">
+		SELECT 
+		*
+		FROM
+			(SELECT 
+					A.NB_NO, 
+					B.TT_NAME, 
+					A.NB_TITLE, 
+					A.NB_INSERTDATE,
+					A.NB_VIEWS,
+					A.NB_FILE,
+					CEIL(ROW_NUMBER() OVER(ORDER BY A.NB_NO DESC)/ #{listSize}) PAGENO,
+	     			COUNT(A.NB_NO) OVER() AS TOTALCOUNT 
+			FROM NOTICE_BOARD A, T_MEMBER B 
+			WHERE NB_DELETEYN ='Y'
+			AND A.TT_NO = B.TT_NO
+			<trim prefix="AND" >
+			<if test="search=='nbTitle' ">
+				<![CDATA[NB_TITLE LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			<if test="search=='nbContents'">
+				<![CDATA[NB_CONTENTS LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			<if test="search=='ttName'">
+				<![CDATA[TT_NAME LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			</trim>
+				) ABC
+				WHERE ABC.PAGENO = #{pageNo}
+				ORDER BY NB_NO DESC
+	</select>
+	
+	<select id="nbChaebun" parameterType="ssm.cm.vo.NoticeBoardVO" resultMap="nbVO">
+		
+		SELECT
+		TO_CHAR(NVL(MAX(SUBSTR(NB_NO,-4)),0)+1) NB_NO
+		FROM NOTICE_BOARD
+		
+	</select>
+	
+	<insert id="nbInsert" parameterType="ssm.cm.vo.NoticeBoardVO">
+	
+		INSERT INTO NOTICE_BOARD(NB_NO,TT_NO,NB_TITLE,NB_CONTENTS,NB_FILE,NB_INSERTDATE,NB_DELETEYN)
+		VALUES(#{nbNo},#{ttNo},#{nbTitle},#{nbContents},#{nbFile},SYSDATE,'Y')
+	
+	</insert>
+	
+	<select id="pwdConfirm" parameterType="map" resultType="int">
+		SELECT NVL((SELECT 1 
+            FROM NOTICE_BOARD A, T_MEMBER B 
+            WHERE A.TT_NO = B.TT_NO
+            AND A.NB_NO = #{param1.nbNo}
+            AND B.TT_PW = #{param2}),0)as result
+		FROM dual
+	</select>
+	
+	<update id="nbUpdate" parameterType="ssm.cm.vo.NoticeBoardVO">
+	
+		UPDATE NOTICE_BOARD SET 
+								 NB_TITLE = #{nbTitle}
+								,NB_CONTENTS = #{nbContents}
+								,NB_FILE = #{nbFile}
+								,NB_UPDATEDATE = SYSDATE
+		WHERE 					 NB_NO = #{nbNo}						
+		AND  					 NB_DELETEYN = 'Y'
+	</update>
+	
+	<update id="nbDelete" parameterType="ssm.cm.vo.NoticeBoardVO">
+	
+		UPDATE NOTICE_BOARD SET 
+								 NB_UPDATEDATE = SYSDATE
+								,NB_DELETEYN = 'N' 
+		WHERE 					 NB_NO = #{nbNo}						
+		AND  					 NB_DELETEYN = 'Y'
+	</update>
+	
+	<select id="nbDetail" parameterType="ssm.cm.vo.NoticeBoardVO" resultMap="nbVO">
+		SELECT
+				A.NB_NO, 
+				B.TT_NAME, 
+				A.NB_TITLE, 
+				A.NB_FILE, 
+				A.NB_CONTENTS, 
+				A.NB_INSERTDATE, 
+				A.NB_UPDATEDATE,
+				A.NB_DELETEYN
+		FROM NOTICE_BOARD A, T_MEMBER B
+		WHERE NB_NO =#{nbNo}
+		AND NB_DELETEYN='Y'
+		AND A.TT_NO = B.TT_NO
+	</select>
+	
+	<update id="nbViews" parameterType="ssm.cm.vo.NoticeBoardVO">
+	
+		UPDATE NOTICE_BOARD SET 
+								 NB_VIEWS = NB_VIEWS +1
+		WHERE 					 NB_NO = #{nbNo}						
+		AND  					 NB_DELETEYN = 'Y'
+	</update>
+	
+</mapper>

@@ -1,0 +1,204 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>vcTimeTable</title>
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+
+<script src="/include/js/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<script src="/include/js/moment.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ko.js"></script>
+<script src="/include/fullcalendar/main.js"></script>
+<script src="/include/fullcalendar/dayGrid/main.min.js"></script>
+<link href="/include/fullcalendar/main.css" rel="stylesheet" />
+<link href="https://unpkg.com/@fullcalendar/daygrid@4.4.0/main.min.css"
+	rel="stylesheet" />
+
+<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				$("#calendar").show();
+				//$('#calendar').fullCalendar({
+				var calendarEl = document.getElementById('calendar');
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					eventSources : 
+						[{
+		                	url : '/visitCounsel/vcScheduleList.ssm',
+		                	type : 'POST',
+		                	dataType : 'JSON',
+		                	data : JSON.stringify({		
+								ssNo : 'S7190001'								
+							}),
+		                	success : function(data){
+		                	},
+		                	error : function(){
+		                    alert("캘린더 eventSource에러");
+		                	},
+		                }],
+					plugins: [ 'dayGrid' ],
+					timeZone: 'local', // 시간 <- 현재지역 시간으로 설정
+				    locale : 'kr',
+					defaultView: 'dayGridWeek',
+					themeSystem : "minty",
+					contentHeight : 'auto',
+					buttonText :{
+						today : '이번주',
+						next : '다음주',
+						prev : '이전주'
+					},
+					eventClick : 	function(info){
+						var time = info.event.title;
+						var id = info.event.id;
+						var groupId = info.event.groupId;
+						var start = moment(info.event.start).format('YYYY-MM-DD');
+						//var start = info.event.start;
+						console.log("(log)title : " + time);
+						console.log("(log)id : " + id);
+						console.log("(log)groupId : " + groupId);
+						console.log("(log)start : " + start);
+						console.log("(log)status : " + status);
+						var date = new Date();
+						var today = moment(date).format('YYYY-MM-DD');
+						if(today>start){
+							alert("지난 날짜입니다");
+						}else{
+							eventInsertt(time, id, groupId, start);
+						}
+						
+					},
+				
+					defaultDate : new Date(),
+					weekends : false,
+				}); 
+				calendar.render();
+				
+				// 상담신청 팝업띄우기
+				function eventInsertt(time, id, groupId, start){
+					
+				
+					console.log("(log)eventInsertt");
+					if(confirm("선택된 시간에 상담신청을 진행하시겠습니까?")){
+						console.log(time + "/ " +  id + "/ " + groupId + "/ " + start);
+						$.ajax({
+							url : '/visitCounsel/vcSchedulePop.ssm',
+							type : 'POST',
+							headers : {
+								"Content-Type":"application/json",
+								"X-HTTP-Method-Override":"POST"
+							},
+							dataType:"json",
+							data : JSON.stringify({
+								vrTime : time,
+								vrNo : id,//id: 예약있으면 ssno 없으면 null
+								ttNo : groupId,
+								vrDate : start
+							}),
+							error : function(){
+								 alert("오류입니다");
+							},
+							success : function(data){
+								console.log("성공");
+								console.log(data.alert);	
+								var aa = data.alert;
+								if(aa=="reserved"){
+									 alert("예약불가");
+									
+								}else{
+									eventmodal(data);
+								}
+							}
+						});
+					} else {
+						// alert("취소되었습니다");
+					}
+				} // eventInsertt
+				
+				//신청서 데이터; 모달로 정보 보내기
+				function eventmodal(data) {				
+			          $("#modal_ttNo").val(data.groupId);
+	                    $("#modal_vrDate").val(data.start);
+	                    $("#modal_vrTime").val(data.time);
+	                    $("#modal_ssNo").val('<%=sessionNO%>');
+	                    $("#modal_ttName").val(data.ttName);
+	                    $("#modal_ssName").val(data.ssName);
+
+						$('#myModal33').show();
+
+		}
+		calendar.render();
+	}); // ready()
+</script>
+
+</head>
+<style>
+
+html, body, div, span, form, img, ul{
+	text-align : center;
+    margin: 0;
+    padding: 0;
+font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+}
+
+
+.fc-time {
+	display: none;
+}
+
+.fc-day-header{
+
+    padding-top: 10px;
+    padding-bottom: 0px;
+
+height : 30px;
+inline-height : 30px;
+font-size: 15px;
+ vertical-align: middle;
+}
+.fc-event-container {
+margin-top: 35px;
+    padding-top: 30px;
+    padding-bottom: 0px;
+}
+.fc-day-grid-event {
+
+padding-left: 0px;
+padding-right: 0px;
+margin-left: 10px;
+margin-right: 10px;
+margin-top: 5px;
+
+height : 20px;
+inline-height : 20px;
+font-size: 12px;
+font-style: normal /* em, dfn, var, cite, address */;
+font-family: "나눔고딕", "NanumGothic" , "돋움", dotum, sans-serif;
+font-weight: bold;
+text-align: center;
+vertical-align: middle;
+}
+
+
+
+#calendar {
+	max-width: 100%; /* max-width : width의 값이 설정한 값보다 커지는 것을 방지 */
+	width: 800px;
+	margin: 70px auto;
+
+	font-size: 10px;
+	align:center;
+}
+</style>
+<body>
+
+
+</body>
+</html>

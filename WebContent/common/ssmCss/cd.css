@@ -1,0 +1,55 @@
+.content {
+	margin : 10px 0;
+/* 	color : #fff; */
+}
+
+.view_box2 input[type=checkbox] {
+	margin-right :5px;
+	margin-bottom :5px;
+}
+
+.view_box2 a {
+	color : black;
+}
+.view_box2 td {
+	color : #fff;
+}
+
+.view_box th {
+	color : #fff;
+}
+
+.view_box td {
+	color : darkgrey;
+}
+
+.view_box input[type=radio]{
+	margin-right :5px;
+	margin-bottom :5px;
+}
+
+.list_box .result{
+	width : 80px;
+	height : 20px;
+}
+
+.result:hover {
+	color : white;
+}
+
+input{
+	border : none;
+}
+
+.list_box td {
+	border-bottom: 1px solid #ebebeb;
+}
+
+#result {
+	widht: 100px;
+    /* height: 30px; */
+    padding: 5px;
+    color: #fff;
+    border-radius: 60px / 70px;
+    background-color: #bd5352;
+}

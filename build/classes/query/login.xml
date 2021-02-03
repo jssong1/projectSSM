@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.mi.dao.LoginDao">
+	<resultMap type="ssm.mi.vo.SMemberVO"  id="sMemberVO">
+		<result property="ssNo"          column="SS_NO"/>
+		<result property="ssName"        column="SS_NAME"/>
+		<result property="ssGrade"       column="SS_GRADE"/>
+		<result property="ssBirth"       column="SS_BIRTH"/>
+		<result property="ssGender"      column="SS_GENDER"/>
+		<result property="ssAuthority"   column="SS_AUTHORITY"/>
+		<result property="ssId"          column="SS_ID"/>
+		<result property="ssPw"          column="SS_PW"/>
+		<result property="ssPn"          column="SS_PN"/>
+		<result property="ssEmail"       column="SS_EMAIL"/>
+		<result property="ssPostno"      column="SS_POSTNO"/>
+		<result property="ssAddress"     column="SS_ADDRESS"/>
+		<result property="ssImage"       column="SS_IMAGE"/>
+		<result property="ssDeleteYN"    column="SS_DELETEYN"/>
+		<result property="ssInsertdate"  column="SS_INSERTDATE"/>
+		<result property="ssUpdatedate"  column="SS_UPDATEDATE"/>
+	</resultMap>
+	
+	<resultMap type="ssm.mi.vo.TMemberVO" id="tMemberVO">
+		<result property="ttNo" column="TT_NO" />
+		<result property="ttName" column="TT_NAME"/>
+		<result property="ttBirth" column="TT_BIRTH" />
+		<result property="ttGender" column="TT_GENDER" />
+		<result property="ttAuthority" column="TT_AUTHORITY" />
+		<result property="sjtCode" column="SJTCODE" />
+		<result property="ttId" column="TT_ID" />
+		<result property="ttPw" column="TT_PW"/>
+		<result property="ttTransferyear" column="TT_TRANSFERYEAR" />
+		<result property="ttPn" column="TT_PN" />
+		<result property="ttEmail" column="TT_EMAIL" />
+		<result property="ttGrade" column="TT_GRADE" />
+		<result property="ttClass" column="TT_CLASS" />
+		<result property="ttPostno" column="TT_POSTNO" />
+		<result property="ttAddress" column="TT_ADDRESS" />
+		<result property="ttImage" column="TT_IMAGE" />
+		<result property="ttDeleteyn" column="TT_DELETEYN" />
+		<result property="ttInsertdate" column="TT_INSERTDATE" />
+		<result property="ttUpdatedate" column="TT_UPDATEDATE" />	
+	</resultMap>
+	
+	<!-- loginCheck(학생) -->
+	<select id="sloginCheck" parameterType="ssm.mi.vo.SMemberVO" resultMap="sMemberVO">
+	/* Mapper - sloginCheck*/
+		SELECT
+		  	  A.SS_NO,
+		  	  A.SS_NAME,
+	      	  A.SS_ID,
+	     	  A.SS_AUTHORITY,
+	     	  A.SS_UPDATEDATE
+	    FROM S_MEMBER A
+	    WHERE A.SS_ID = #{ssId}
+	    AND   A.SS_PW = #{ssPw}   
+	</select>
+	      
+	<!-- loginCheck(선생님,상담사,관리자) -->
+	<select id="tLoginCheck" parameterType="ssm.mi.vo.TMemberVO" resultMap="tMemberVO">
+	/* Mapper - tLoginCheck*/
+		SELECT
+		  	  A.TT_NO,
+		  	  A.TT_NAME,
+	      	  A.TT_ID,
+	     	  A.TT_AUTHORITY,
+	     	  A.TT_UPDATEDATE
+	    FROM T_MEMBER A
+	    WHERE A.TT_ID = #{ttId}
+	    AND   A.TT_PW = #{ttPw}   
+	</select>      
+
+</mapper>

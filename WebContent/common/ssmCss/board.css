@@ -1,0 +1,77 @@
+/* 전체 div */
+#boardContainer {
+	width:1050px;
+	/* height:677px; */
+	margin-bottom:50px;
+	float:left;
+	font-size:15px;
+}
+
+/* 제목 div */
+.sub_title_wrap {
+	background:#394264;
+	height:54px;
+	margin-right:5px;
+   	margin-bottom:10px;
+   	margin-left:5px;
+	font-size: 28px;
+    line-height: 55px;
+    text-indent: 20px;
+    font-weight: bold;
+    color: #fff;
+
+}
+
+/* 제목 div의 글씨 힌색으로 바꿔줌 */
+a[target="a_"]{	
+	color: #fff; font-size: 15px;
+
+}
+
+/* 메인이미지 div */
+#mainimage {
+	border: 20px solid #394264;
+	background:#394264;
+	margin-right:5px;
+	margin-left:5px;
+}
+
+/* 검색조건 */
+#searchdiv {
+	 width: 100%;
+	 margin-bottom: 10px;
+}
+
+/* 검색조건 왼쪽정렬 */
+#f_search{
+	text-align:left
+}
+
+/* 게시판 내용 */
+#boardlist {
+	
+	height:354px;
+	border: 10px solid #394264;
+	background:#394264;
+	margin-top:1px;
+	margin-right:5px;
+	margin-left:5px;
+	margin-bottom: 20px;
+}	
+
+/* 게시판내용 중 th 바꿔줌 */
+table.list thead th {
+   background: #50597b;
+   height: 40px;
+   text-align: center;
+   vertical-align: middle;
+   color: #fff;
+   margin:0px;
+}
+
+/* 게시판 collapse설정 */
+table.list {
+   border-collapse: collapse;
+   width:100%;
+}
+

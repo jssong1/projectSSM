@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.br.dao.Non_VideoDao">
+	<resultMap type="ssm.br.vo.Non_VideoVO"  id="Non_VideoVO">
+		<result property="nvNo"             column="NV_NO"/>
+		<result property="nvTitle"          column="NV_TITLE"/>
+		<result property="nvVideo"         column="NV_VIDEO"/>
+		<result property="nvInsertdate"          column="NV_INSERTDATE"/>
+		<result property="nvUpdatedate"         column="NV_UPDATEDATE"/>
+		<result property="nvDeleteyn"         column="NV_DELETEYN"/>
+		<result property="ttNo"         column="TT_NO"/>
+		<result property="ttName"         column="TT_NAME"/>
+	</resultMap>
+	
+	
+	<select id="chaebun" parameterType="ssm.br.vo.Non_VideoVO" resultType="String">
+		SELECT NVL(MAX(SUBSTR(NV_NO,-4)),0)+1 AS NV_NO FROM NON_VIDEO
+	</select>
+	
+	<select id="goUpdateVideo" parameterType="ssm.br.vo.Non_VideoVO" resultMap="Non_VideoVO">
+		SELECT NV_NO,
+        NV_TITLE,
+        NV_VIDEO,
+        TO_CHAR(A.NV_INSERTDATE,'YYYY-MM-DD') NV_INSERTDATE,
+        TO_CHAR(A.NV_UPDATEDATE,'YYYY-MM-DD') NV_UPDATEDATE,
+        NV_DELETEYN,
+        TT_NO
+		FROM NON_VIDEO A
+		WHERE NV_NO=#{nvNo}
+	</select>
+	
+	
+	<select id="listVideo" parameterType="ssm.br.vo.Non_VideoVO" resultMap="Non_VideoVO">
+	SELECT NV_NO,
+		   NV_TITLE,
+		   NV_VIDEO,
+		   TO_CHAR(A.NV_INSERTDATE,'YYYY-MM-DD') NV_INSERTDATE,
+		   TO_CHAR(A.NV_UPDATEDATE,'YYYY-MM-DD') NV_UPDATEDATE,
+		   NV_DELETEYN,
+		   A.TT_NO,
+		   (SELECT TT_NAME FROM T_MEMBER WHERE TT_NO=A.TT_NO) TT_NAME
+	FROM NON_VIDEO A
+	WHERE NV_DELETEYN='Y'
+	</select>
+	<insert id="insertVideo" parameterType="ssm.br.vo.Non_VideoVO">
+		INSERT INTO NON_VIDEO(
+                        NV_NO,
+                        NV_TITLE,
+                        NV_VIDEO,
+                        NV_INSERTDATE,
+                        NV_UPDATEDATE,
+                        NV_DELETEYN,
+                        TT_NO)
+		VALUES(         #{nvNo},
+						#{nvTitle},
+						#{nvVideo},
+						SYSDATE,
+						SYSDATE,
+						'Y',
+						#{ttNo})
+	</insert>
+	
+	<update id="updateVideo" parameterType="ssm.br.vo.Non_VideoVO">
+		
+		UPDATE NON_VIDEO
+		SET NV_TITLE=#{nvTitle},
+		<if test="nvVideo!=null and nvVideo!=''">
+		    NV_VIDEO=#{nvVideo},
+		</if>
+		
+		    NV_UPDATEDATE=SYSDATE
+		WHERE NV_NO=#{nvNo}
+	</update>
+	
+	
+	<update id="deleteVideo" parameterType="ssm.br.vo.Non_VideoVO">
+		
+		UPDATE NON_VIDEO
+		SET NV_DELETEYN='N'
+		WHERE NV_NO=#{nvNo}
+	</update>
+	
+
+</mapper>

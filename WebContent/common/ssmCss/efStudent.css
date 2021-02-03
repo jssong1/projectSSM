@@ -1,0 +1,146 @@
+@CHARSET "UTF-8";
+
+h2 {
+	color : #ffffff85;
+}
+.cGrid {
+    width: 49.5%;
+    height: 50%;
+    margin-right: 1%;
+/*     border:7px solid #67D5B5; */
+	background-color : cadetblue;
+    float: left;
+    border-radius: 10px;
+    padding : 5px 0;
+}
+
+.nGrid {
+   	width: 49.5%;
+    height: 50%;
+/*     border:7px solid #EE7785; */
+	background-color : cadetblue;
+    float: right;
+    border-radius: 10px;
+    padding : 5px 0;
+}
+
+.cgGrid {
+	width: 49.5%;
+    height: 50%;
+    margin: 1% 0;
+    margin-right: 1%;
+/*     border:7px solid #C89EC4; */
+    background-color : cadetblue;
+    clear: both;
+    float: left;
+    border-radius: 10px;
+    padding : 5px 0;
+}
+
+.cGrid #cGridTb{
+	width : 90%;
+	height : 200px;
+	text-align : center;
+	margin : 5px auto;
+/* 	background-color: red; */
+}
+
+#cGridTb td {
+	background-color: #FBFBE87D;
+	width : 40%;
+}
+
+#cGridTb th {
+	background-color: lightgrey;
+	color : black;
+}
+
+.vGrid {
+	width: 49.5%;
+    height: 50%;
+    margin: 10px 0;
+/*     border:7px solid #84B1ED; */
+    background-color : #EE7785;
+    float: right;
+    border-radius: 10px;
+    padding : 5px 0;
+}
+
+.vGrid img {
+	width: 25%;
+	height: 25%;
+}
+
+
+.gridContainer {
+    width: 100%;
+    font-size : 13px;
+    height: 580px;
+    margin: 10px 0;
+	
+}
+
+.cgGrid #cgGridTb {
+	width : 90%;
+	text-align : center;
+	margin : 5px auto;
+/* 	background-color: red; */
+}
+
+
+#cgGridTb td {
+	background-color: #FBFBE87D;
+	height : 35px;
+}
+
+#cgGridTb th {
+	background-color: lightgrey;
+	color : black;
+}
+
+.nGrid #nGridTb {
+	width : 90%;
+	height : auto;
+	text-align : center;
+	margin : 5px auto;
+/* 	background-color: red; */
+}
+
+
+#nGridTb td {
+	background-color: #FBFBE87D;
+	height : 35px;
+}
+
+#nGridTb th {
+	background-color: lightgrey;
+	color : black;
+}
+
+#subTit {
+	margin : 10px 0;
+	font-size : 12px;
+}
+
+#dd {
+	height : 100%;
+}
+
+.vGrid #valueImg {
+	margin: 5% 0;
+}
+
+#calendar{
+	width : 500px;
+}
+
+.gridContainer input[type=button]{
+	background-color: #ffffff94;
+	padding : 5px;
+	color : #2b475e;
+	border-radius : 5px;
+}
+
+.gridContainer td, span {
+	color : black;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cg.dao.Visit_CommentDAO">
+   <resultMap type="ssm.cg.vo.Visit_CommentVO" id="vvo">
+      <result property="vrNo" column="VR_NO" />
+      <result property="vcNo" column="VC_NO" />
+      <result property="ttNo" column="TT_NO" />
+      <result property="ssNo" column="SS_NO" />
+      <result property="vcFile" column="VC_FILE" />
+      <result property="vcComments" column="VC_COMMENTS" />
+      <result property="vcInsertdate" column="VC_INSERTDATE" />
+      <result property="vcUpdatedate" column="VC_UPDATEDATE" />
+      <result property="vcDeleteyn" column="VC_DELETEYN" />
+   </resultMap>
+   
+   <insert id="vcInsert" parameterType="ssm.cg.vo.Visit_CommentVO">
+      INSERT INTO VISIT_COMMENT
+      (VR_NO, VC_NO, TT_NO, SS_NO, VC_COMMENTS, VC_INSERTDATE, VC_UPDATEDATE, VC_DELETEYN)
+      VALUES
+      (#{vrNo}, #{vcNo}, #{ttNo}, #{ssNo}, #{vcComments}, SYSDATE, SYSDATE, 'Y')
+   </insert>
+   
+   <select id="vcChaebun" parameterType="ssm.cg.vo.Visit_CommentVO" resultMap="vvo">
+      SELECT
+      CASE WHEN MAX(VC_NO) IS NULL THEN 1
+      ELSE MAX(SUBSTR(VC_NO, -4)) + 1 END AS VC_NO
+      FROM VISIT_COMMENT
+   </select>
+   
+   <update id="vcUpdate" parameterType="ssm.cg.vo.Visit_CommentVO">
+      UPDATE VISIT_COMMENT
+      SET VC_COMMENTS = #{vcComments}
+      WHERE VC_NO = (SELECT VC_NO FROM VISIT_COMMENT WHERE VR_NO = #{vrNo} AND VC_DELETEYN = 'Y')
+   </update>
+   
+   <update id="vcDelete" parameterType="ssm.cg.vo.Visit_CommentVO">
+      UPDATE VISIT_COMMENT
+      SET VC_DELETEYN = 'N'
+      WHERE VC_NO = (SELECT VC_NO FROM VISIT_COMMENT WHERE VR_NO = #{vrNo} AND VC_DELETEYN = 'Y')
+      AND VC_DELETEYN = 'Y'
+   </update>
+</mapper>

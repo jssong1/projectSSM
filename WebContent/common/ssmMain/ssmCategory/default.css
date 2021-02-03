@@ -1,0 +1,142 @@
+html, body, div, span, form, img, ul{
+	text-align : center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+html, body {
+	height : 100%;
+}
+
+html {
+	background-color: white;
+}
+
+hr {
+	margin : 0;
+}
+		
+/* ul 기본속성 */
+ul {
+	display : table;
+	margin : 0px;
+	list-style : none;
+  	padding:0;
+  	overflow : hidden;
+}
+
+/* 링크 기본 속성 */
+a {
+	text-decoration : none;
+	font-size : 15px;
+	color : darkslateblue;
+}
+
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean" rel="stylesheet"> 
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans:400'); 
+@import url('https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap&subset=korean'); 
+font-family: 'Black Han Sans', sans-serif;
+
+/* header */
+header {
+	display : inline-block;
+	width : 100%;
+    margin-bottom : 5px;
+}
+
+
+
+/* 비트고등학교 */
+header #headerTit {
+	font-size : 20px;
+	font-weight: 900;
+}
+
+/* header 구분선 */
+header hr  {
+    height: 2px;
+    background-color: #95a9bb;
+    border: 0px;
+}
+
+/* footer */
+footer {
+	display : inline-block;
+	width : 100%;
+	margin : 1% 0;
+	font-size : 10px;
+	color : grey;
+	min-height: 120px;
+	text-align : center;
+}
+
+/* footer 구분선 */
+footer>.footerTxt hr  {
+    height: 2px;
+    background-color: #95a9bb;
+    border: 0px;
+/*     #353866 */
+}
+
+
+/* =================================*/
+
+/* 전체 div */
+#wrap {
+	width : 85%;
+	height : 100%;
+	margin : auto;
+	border : 1px;
+}
+
+/* 상단 메뉴바 ul */
+.menuList {
+	display: table;
+	width : 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* 메뉴 색상 */
+.menuList li{
+	float : left;
+	width : 20%;
+	height : 20%;
+	margin : 0.2% 0;
+/* 	background-color : #492540; */
+}
+
+/* 상단 메뉴바 a */
+nav>.wrapMenu>.menuList a {
+    width: 100%;
+    margin : 1%;
+    display: inline-block;
+    padding: 10px 0px;
+    font-size: 15px;
+}
+
+/* 상단 메뉴바 a:hover */
+.menuList a:hover {
+	background-color : #003a70;
+	color : #c72e45;
+    transition: all .4s ease;
+}
+
+
+/*      0322      */
+*{
+	font-style: normal /* em, dfn, var, cite, address */;
+    font-family: "나눔고딕", "NanumGothic" , "돋움", dotum, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 div */
+#wrap {
+	width : 80%;
+	height : 100%;
+	margin : auto;
+	border : 1px;
+}

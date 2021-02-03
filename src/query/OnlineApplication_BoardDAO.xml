@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cg.dao.OnlineApplication_BoardDAO">
+   <resultMap type="ssm.mi.vo.TMemberVO" id="TMemberVO">
+      <result property="ttNo" column="TT_NO" />
+      <result property="ttName" column="TT_NAME" />
+      <result property="ttAuthority" column="TT_AUTHORITY" />
+   </resultMap>
+   <resultMap type="ssm.mi.vo.SMemberVO" id="SMemberVO">
+      <result property="ssNo" column="SS_NO" />
+      <result property="ssName" column="SS_NAME" />
+      <result property="ssGrade" column="SS_GRADE"/>
+      <result property="ssClass" column="SS_CLASS"/>
+      <result property="ssNum" column="SS_NUM"/>
+   </resultMap>   
+   <resultMap type="ssm.cg.vo.OnlineApplication_BoardVO" id="oaBoard">
+      <result property="oaNo" column="OA_NO" />
+      <result property="ssNo" column="SS_NO" />
+      <result property="ttNo" column="TT_NO" />
+      <result property="oaCountall" column="OA_COUNTALL" />
+      <result property="oaCount" column="OA_COUNT" />
+      <result property="oaField" column="OA_FIELD" />
+      <result property="oaTitle" column="OA_TITLE" />
+      <result property="oaContents" column="OA_CONTENTS" />
+      <result property="oaStatus" column="OA_STATUS"/>
+      <result property="oaFile" column="OA_FILE" />
+      <result property="oaInsertdate" column="OA_INSERTDATE"/>
+      <result property="oaUpdatedate" column="OA_UPDATEDATE"/>
+      <result property="oaDeleteyn" column="OA_DELETEYN"/>
+      <collection property="tmemberVO" resultMap="TMemberVO"/>
+      <collection property="smemberVO" resultMap="SMemberVO"/>
+   </resultMap>
+   
+   <sql id="oaBoardCommon">
+      SELECT 
+            A.OA_NO OA_NO,
+          (SELECT B.NAME FROM CODE_TABLE B WHERE B.CODE = A.OA_STATUS)AS OA_STATUS,
+           (SELECT B.NAME FROM CODE_TABLE B WHERE B.CODE = A.OA_FIELD) AS OA_FIELD,
+           A.OA_TITLE OA_TITLE,
+           (SELECT C.SS_NAME FROM S_MEMBER C WHERE A.SS_NO = C.SS_NO) AS SS_NAME,
+           (SELECT C.TT_NAME FROM T_MEMBER C WHERE A.TT_NO = C.TT_NO) AS TT_NAME,
+           A.OA_INSERTDATE OA_INSERTDATE         
+       FROM ONLINE_APPLICATION A
+       WHERE A.OA_DELETEYN = 'Y'
+       AND A.SS_NO = #{ssNo}
+       <trim prefix="AND" prefixOverrides="AND">
+          <if test="search == 'oaTitle'">
+             <![CDATA[OA_TITLE LIKE '%' || #{keyword} || '%']]>
+          </if>
+          <if test="search == 'oaField'">
+             <![CDATA[AND OA_FIELD LIKE '%' || #{keyword} || '%']]>
+          </if>
+       </trim>
+   </sql>
+   
+   <!-- 전체조회, 상세조회 -->
+   
+    <select id="oaBoardList" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultMap="oaBoard">
+       SELECT 
+           OA_NO,
+           OA_STATUS,
+           OA_FIELD,
+           OA_TITLE,
+           SS_NAME,
+           TT_NAME,
+           TO_CHAR(OA_INSERTDATE, 'YYYY-MM-DD HH24:MI:SS') AS OA_INSERTDATE
+      FROM (
+         SELECT range.*, ROWNUM AS RNUM
+         FROM (
+            <include refid="oaBoardCommon"></include> 
+            
+            <choose>
+               <when test = "orderBy == 'oaNo'">
+                  ORDER BY OA_NO
+               </when>
+            </choose>
+            <choose>
+               <when test = "orderSc == 'ASC'">
+                  ASC
+               </when>
+               <when test = "orderSc == 'DESC'">
+                  DESC
+               </when>
+            </choose>
+         ) range
+      ) 
+      <where>
+         <if test = "startRow != null and startRow != ''">
+            <if test = "endRow != null and endRow != ''">
+               RNUM BETWEEN #{startRow} AND #{endRow}
+            </if>
+         </if>
+      </where>
+      ORDER BY OA_NO DESC
+    </select>
+    
+    <!-- 전체 레코드 구현 -->
+    <select id="oaBoardListCnt" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultType="int">
+       SELECT NVL(COUNT(1), 0) 
+       FROM(
+          SELECT range.*,ROWNUM AS RNUM 
+          FROM(
+             <include refid="oaBoardCommon"></include>
+             ORDER BY OA_NO DESC
+          ) range
+       )
+    </select>
+
+
+      <select id="oaBoardDetail" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultMap="oaBoard">
+         SELECT
+             A.OA_NO,
+             TO_CHAR(A.OA_INSERTDATE, 'YYYY-MM-DD') AS OA_INSERTDATE, 
+             A.SS_NO,
+               (SELECT B.SS_NAME FROM S_MEMBER B WHERE A.SS_NO=B.SS_NO) AS SS_NAME,
+             A.TT_NO,
+             A.OA_FIELD,
+             (SELECT B.TT_NAME FROM T_MEMBER B WHERE A.TT_NO=B.TT_NO) AS TT_NAME,
+                A.OA_TITLE,
+              A.OA_CONTENTS,
+              A.OA_FILE
+         FROM ONLINE_APPLICATION A
+         WHERE A.OA_NO  =#{oaNo}
+         AND A.OA_DELETEYN = 'Y'
+   </select>
+
+   
+   
+   <!-- 입력, 수정, 삭제 -->
+   <insert id="oaBoardInsert" parameterType="ssm.cg.vo.OnlineApplication_BoardVO">
+      INSERT INTO ONLINE_APPLICATION
+      (OA_NO, SS_NO, TT_NO, OA_STATUS, OA_FIELD, OA_TITLE, OA_CONTENTS, OA_FILE,OA_INSERTDATE, OA_DELETEYN)
+      VALUES
+      (#{oaNo}, (SELECT SS_NO FROM S_MEMBER WHERE SS_NO= #{ssNo})
+       ,(SELECT A.TT_NO TT_NO
+         FROM( 
+                     SELECT SS_NO SS_NO,TT_NO,DELETEYN FROM FM_MEMBER WHERE DELETEYN='Y'
+                 UNION SELECT SS_NO SS_NO,TT_NO,DELETEYN FROM JR_MEMBER WHERE DELETEYN='Y'
+                 UNION SELECT SS_NO SS_NO,TT_NO,DELETEYN FROM SR_MEMBER WHERE DELETEYN='Y'
+         ) A, S_MEMBER B, T_MEMBER C
+         WHERE B.SS_NO = A.SS_NO
+         AND C.TT_NO = A.TT_NO
+         AND B.SS_NO=#{ssNo})
+       , '01',#{oaField}, #{oaTitle}, #{oaContents}, #{oaFile, jdbcType=VARCHAR},
+       SYSDATE, 'Y')         
+   </insert>
+   
+   <update id="oaBoardUpdate" parameterType="ssm.cg.vo.OnlineApplication_BoardVO">
+      UPDATE ONLINE_APPLICATION
+      SET OA_TITLE = #{oaTitle},
+          OA_CONTENTS = #{oaContents}, 
+          OA_FIELD = #{oaField},
+          OA_FILE = #{oaFile},
+          OA_UPDATEDATE = SYSDATE
+      WHERE OA_NO = #{oaNo}
+      AND OA_DELETEYN = 'Y'
+   </update>
+   
+   <delete id="oaBoardDelete" parameterType="ssm.cg.vo.OnlineApplication_BoardVO">
+      UPDATE ONLINE_APPLICATION
+      SET OA_DELETEYN = 'N',
+         OA_UPDATEDATE = SYSDATE
+      WHERE OA_NO = #{oaNo}
+      AND OA_DELETEYN = 'Y'
+   </delete>
+   
+   
+   <!-- 채번 -->
+   <select id="oaChaebun" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultMap="oaBoard">
+      SELECT /*+ ONLINE_APPLICATION_PK */
+      CASE WHEN MAX(OA_NO) IS NULL THEN 1
+      ELSE MAX(SUBSTR(OA_NO,-4))+1 END AS OA_NO 
+      FROM ONLINE_APPLICATION
+   </select>
+   
+   <!-- 푸쉬 ***************************************************************
+   <select id="pollPush" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultType="int">
+      SELECT COUNT(1) 
+      FROM ONLINE_COMMENT A JOIN ONLINE_APPLICATION B
+      ON (A.OA_NO = B.OA_NO)
+      WHERE B.SS_NO = #{ssNo}
+      AND B.OA_STATUS = '04' 
+   </select>
+   ..? -->
+   
+   <!--///////////////////////교사페이지///////////////////////// -->
+   <!-- 담임교사의 전체 학생 조회 (온라인상담) -->
+    <select id="oaListCLT" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultMap="oaBoard">
+      SELECT A.SS_NO, (SELECT SS_NAME FROM S_MEMBER B WHERE A.SS_NO=B.SS_NO) SS_NAME,
+        (SELECT D.NAME FROM CODE_TABLE D WHERE D.CODE=A.SS_GRADE)SS_GRADE
+        ,A.SS_CLASS,A.SS_NUM
+       , A.TT_NO, (SELECT TT_NAME FROM T_MEMBER C WHERE A.TT_NO=C.TT_NO) TT_NAME
+       ,(SELECT COUNT(*)FROM ONLINE_APPLICATION E WHERE E.OA_DELETEYN = 'Y' AND E.SS_NO = A.SS_NO AND E.TT_NO=A.TT_NO AND E.OA_STATUS='01') OA_COUNT
+       ,(SELECT COUNT(*)FROM ONLINE_APPLICATION E WHERE E.OA_DELETEYN = 'Y' AND E.SS_NO = A.SS_NO AND E.TT_NO=A.TT_NO) OA_COUNTALL
+      FROM (
+              SELECT SS_NO SS_NO,FM_GRADE SS_GRADE,FM_CLASS SS_CLASS,FM_NUM SS_NUM,TT_NO,DELETEYN FROM FM_MEMBER WHERE DELETEYN='Y'
+              UNION SELECT SS_NO SS_NO,JR_GRADE SS_GRADE,JR_CLASS SS_CLASS,JR_NUM SS_NUM,TT_NO,DELETEYN FROM JR_MEMBER WHERE DELETEYN='Y'
+              UNION SELECT SS_NO SS_NO,SR_GRADE SS_GRADE,SR_CLASS SS_CLASS,SR_NUM SS_NUM,TT_NO,DELETEYN FROM SR_MEMBER WHERE DELETEYN='Y'
+      ) A
+      WHERE A.TT_NO=#{ttNo}
+      ORDER BY  (SELECT SUBSTR(A.SS_NO, -3) FROM DUAL) ASC
+    </select>
+    
+    <!-- 학생의 답변대기 상담글 조회(온라인상담-담임교사)-->
+    <select id="ssOaList" parameterType="ssm.cg.vo.OnlineApplication_BoardVO" resultMap="oaBoard">
+      SELECT 
+           A.OA_NO,
+           (SELECT B.NAME FROM CODE_TABLE B WHERE B.CODE = A.OA_STATUS)AS OA_STATUS,
+           (SELECT B.NAME FROM CODE_TABLE B WHERE B.CODE = A.OA_FIELD) AS OA_FIELD,
+           A.OA_TITLE,
+           (SELECT C.SS_NAME FROM S_MEMBER C WHERE A.SS_NO = C.SS_NO) AS SS_NAME,
+           A.OA_INSERTDATE,
+             A.TT_NO
+       FROM ONLINE_APPLICATION A
+       WHERE A.OA_DELETEYN = 'Y'
+         AND A.SS_NO = #{ssNo}
+         AND A.TT_NO = #{ttNo}
+    </select>
+    
+</mapper>

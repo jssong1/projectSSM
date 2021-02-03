@@ -1,0 +1,148 @@
+html, body, div, span, form, img, ul{
+	text-align : center;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    color : black;
+    vertical-align: baseline;
+}
+html, body {
+	height : 100%;
+}
+
+html {
+	background-color: #53888b91;
+}
+
+hr {
+	margin : 0;
+}
+		
+/* ul 기본속성 */
+ul {
+	display : table;
+	margin : 0px;
+	list-style : none;
+  	padding:0;
+}
+
+li {
+	list-style : none;
+}
+
+/* 링크 기본 속성 */
+a {
+	text-decoration : none;
+	font-size : 15px;
+	color : white;
+}
+
+/* header */
+header {
+	display : inline-block;
+	width : 100%;
+    margin-bottom : 5px;
+}
+
+/* 비트고등학교 */
+header #headerTit {
+	font-size : 20px;
+	color : black;
+	font-weight: bold;
+}
+
+/* header 구분선 */
+header hr  {
+    height: 2px;
+    background-color: cadetblue;
+    border: 0px;
+}
+
+/* footer */
+footer {
+	display : inline-block;
+	width : 100%;
+	margin : 5px 0;
+	font-size : 10px;
+	color : grey;
+}
+
+/* footer 구분선 */
+footer>.footerTxt hr  {
+    height: 2px;
+    background-color: cadetblue;
+    border: 0px;
+/*     #353866 */
+}
+
+
+/* =================================*/
+
+/* 상단 메뉴바 ul */
+.menuList {
+	display: table;
+	width : 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* 메뉴 색상 */
+.menuList li{
+	float : left;
+	width : 19.84%;
+	height : 20%;
+	margin : 0.2% 0.1%;
+	background-color : #2b475e;
+}
+
+.menuList li:nth-child(1) {
+	margin-left : 0;
+/* 	background-color : #8592c4e8; */
+}
+.menuList li:nth-last-child(1) {
+	margin-right : 0;
+/* 	background-color : #8592c4e8; */
+}
+
+/* 상단 메뉴바 a */
+nav>.wrapMenu>.menuList a {
+    width: 100%;
+/*     color : white; */
+    display: inline-block;
+    padding: 20px 0px;
+    font-size: 15px;
+}
+
+/* 상단 메뉴바 a:hover */
+.menuList a:hover {
+	background-color : #FFF;
+	color : #c72e45;
+    transition: all .4s ease;
+}
+
+
+/*      0322      */
+*{
+	font-style: normal /* em, dfn, var, cite, address */;
+    font-family: "나눔고딕", "NanumGothic" , "돋움", dotum, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 div */
+#wrap {
+	width : 75%;
+	height : 100%;
+	margin : auto;
+	border : 1px;
+}
+
+/* html, body { */
+/* 	height : 100%; */
+/* 	color: #666; */
+/* 	background-color: #fff; */
+/*     font-size: 0.75em !important 12px; */
+/*     word-wrap: break-word; */
+/*     word-break: keep-all; */
+/* } */

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cg.dao.Online_CommentMapper">
+
+   <resultMap type="ssm.cg.vo.Online_CommentVO" id="ocVO">
+      <result property="ocNo" column="OC_NO" />
+      <result property="oaNo" column="OA_NO" />
+      <result property="oaStatus" column="OA_STATUS" />
+      <result property="ttNo" column="TT_NO" />
+      <result property="ocTitle" column="OC_TITLE" />
+      <result property="ocContents" column="OC_CONTENTS" />
+      <result property="ocFile" column="OC_FILE" />
+      <result property="ocInsertdate" column="OC_INSERTDATE" />
+      <result property="ocUpdatedate" column="OC_UPDATEDATE" />
+      <result property="ocDeleteyn" column="OC_DELETEYN" />
+   </resultMap>
+   <select id="ocList" parameterType="String" resultMap="ocVO">
+      SELECT 
+      A.OC_NO OC_NO
+      ,A.OA_NO OA_NO
+        ,(SELECT C.NAME FROM CODE_TABLE C WHERE B.OA_STATUS =C.CODE) OA_STATUS
+      ,A.OC_TITLE OC_TITLE
+      ,A.OC_CONTENTS OC_CONTENTS
+      ,A.OC_FILE OC_FILE
+      ,TO_CHAR(A.OC_INSERTDATE,'YYYY-MM-DD HH24:MI:SS')AS OC_INSERTDATE
+      FROM ONLINE_COMMENT A, ONLINE_APPLICATION B
+      WHERE A.OA_NO=#{oaNo}
+        AND B.OA_NO=#{oaNo}
+      AND OC_DELETEYN='Y'
+   </select>
+   <select id="selectBoardCommentByCode" parameterType="ssm.cg.vo.Online_CommentVO" resultMap="ocVO">
+    SELECT 
+      A.OC_NO OC_NO
+      ,A.OA_NO OA_NO
+        ,B.TT_NAME TT_NO
+        ,(SELECT D.NAME FROM CODE_TABLE D WHERE C.OA_STATUS=D.CODE) OA_STATUS
+      ,A.OC_TITLE OC_TITLE
+      ,A.OC_CONTENTS OC_CONTENTS
+      ,A.OC_FILE OC_FILE
+      ,TO_CHAR(A.OC_INSERTDATE,'YYYY-MM-DD HH24:MI:SS')AS OC_INSERTDATE
+      FROM ONLINE_COMMENT A, T_MEMBER B, ONLINE_APPLICATION C
+      WHERE A.OA_NO=#{oaNo}
+        AND C.OA_NO= #{oaNo}
+      AND A.OC_DELETEYN='Y'
+        AND A.TT_NO=B.TT_NO
+   
+   </select>
+   
+   <select id="selectChaebun"  resultMap="ocVO">
+    /* Mapper - chaebun */
+      SELECT NVL(MAX(SUBSTR(OC_NO,-4)),0)+1 AS OC_NO FROM ONLINE_COMMENT
+   </select>
+   
+   <!-- 댓글 인서트 %% 인서트 후에 트리거를 이용하여 해당 글번호의 상태를 답변완료로 업데이트 -->
+   <insert id="commentInsert" parameterType="ssm.cg.vo.Online_CommentVO">
+   INSERT INTO ONLINE_COMMENT ( 
+      OC_NO
+      ,OA_NO
+      ,TT_NO
+      ,OC_TITLE
+      ,OC_CONTENTS   
+      ,OC_INSERTDATE
+      ,OC_DELETEYN
+   )VALUES(
+    #{ocNo}, #{oaNo}, #{ttNo}, #{ocTitle}, #{ocContents}, SYSDATE,'Y'
+   )
+   </insert>
+   
+   <update id="commentUpdate" parameterType="ssm.cg.vo.Online_CommentVO">
+      /*Comment - commentUpdate*/
+      UPDATE ONLINE_COMMENT
+      SET 
+         OC_TITLE =#{ocTitle}
+         ,OC_CONTENTS   = #{ocContents}
+         ,OC_UPDATEDATE = SYSDATE
+      WHERE OC_NO =#{ocNo}
+      AND OC_DELETEYN = 'Y'
+   </update>
+   <delete id="commentDelete" parameterType="ssm.cg.vo.Online_CommentVO">
+      /*Comment - commentUpdate*/
+      UPDATE ONLINE_COMMENT
+      SET OC_DELETEYN = 'N'
+      WHERE OC_NO =#{ocNo}
+      AND OC_DELETEYN = 'Y'
+   </delete>
+   
+   
+</mapper>

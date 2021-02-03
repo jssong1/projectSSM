@@ -1,0 +1,192 @@
+/* .searchGuide { */
+/* 	padding : 1%; */
+/* /* 	margin-bottom :10px; */ */
+/* /* 	border :1px solid lightgray; */ */
+/* 	background-color: #ebebeb; */
+/* 	margin : 10px 0; */
+/* /* 	display : table; */ */
+/* } */
+
+#npApplication a {
+	color : black;
+}
+/* 프로그램 목록 전체 div */
+
+.allBox{
+	width: :100%;
+    display: flex;
+    flex-wrap: wrap;
+	font-size : 15px;
+	color : white;
+}
+
+/* 프로그램 목록 개별 */
+.box{	
+    background-color: #53888b91;
+    display: flex;
+    cursor: pointer;
+    width: 49.5%;
+    margin-bottom : 1%;
+    box-sizing: border-box;
+    float: left;
+}
+
+.allBox .box:nth-child(odd) {
+	margin-right : 1%;
+}
+
+.box:hover{
+/* 	text-decoration-line: underline; */
+/* 	border:2px solid #ffefb6; */
+	background-color: #2b475e;
+}
+
+/* 프로그램 이미지? */
+.imgbox{
+	width: 170px;
+	height: 140px;
+} 
+
+.notePart{
+    text-align: left;
+    padding: 0px 5px 5px;
+    margin: auto auto;
+}
+.subject{
+	font-size: 18px;
+    text-align: left;
+    margin: 5px 0;
+    font-weight: 700;
+}
+.imgPart img {
+	width: 135px;
+    height: 185px;
+}
+
+
+/***nvMain*****************************************************/
+.imbox2ul {
+	margin : 0 auto;
+}
+
+#videoOO {
+	width: 550px;
+    height: 380px;
+/*     margin: 0 40px; */
+}
+
+#detail> table {
+	margin : 0 10px;
+	width : 270px;
+	height : 130px;
+	font-size : 15px;
+}
+#detail td {
+	width : 70%;
+	height : 30px;
+/* 	background-color: red; */
+}
+
+#detail {
+/* 	width : 24%; */
+	margin : 10px auto;
+	text-align : left;
+	float : left;
+}
+
+#leftcol ul{
+	width : 110px;
+/* 	background-color: red; */
+}
+
+#leftcol a {
+	color : #2b475e;
+}
+#leftcol {
+/* 	background-color: red; */
+	float : left;
+}
+#leftcol li {
+	line-height: 30px;
+    margin: 1px 0;
+    /* border: 1px solid #d5d5d5; */
+    background-color: #5f9ea085;
+}
+
+#leftcol li:hover {
+	background-color: #afcecf;
+}
+
+#box2 {
+	margin : 0 10px 10px;
+/* 	float : left; */
+}
+
+#ttBox {
+/* 	background-color: red; */
+	margin-left : 90%;
+	margin-top : 10px;
+}
+/*naStudentMain*******************************************************/
+
+#nbTable table {
+	margin : 10px auto;
+	font-size : 15px;
+	width : 100%;
+	border-collapse: collapse;
+}
+
+#tableTit {
+	color : black;
+	height : 40px;
+	background-color : #53888b91;
+}
+#nbTable tr{
+	border-top : 1px solid #d5d5d5;
+	border-bottom : 1px solid #d5d5d5;
+}
+
+#nbTable td {
+	height : 25px;
+	color : #fff;
+}
+
+#nbTable tbody tr:nth-child(1n) {
+	border-right : 0;
+	border-left : 0;
+/* 	background-color : #8592c4e8; */
+}
+
+/* 검색박스 table */
+
+.searchGuide {
+/* 	background-color: red; */
+}
+.search_box {
+/* 	background-color: #ebebeb; */
+	width : 100%;
+	margin : 10px auto;
+}
+.search_box tr {
+/* 	width : 100px; */
+	margin : 10px 0;
+}
+
+#sHowmany{
+/* 	display: table-row; */
+	text-align: end;
+	color : black;
+	margin-bottom: 10px;
+}
+
+.paging {
+	clear : both;
+}
+
+
+#form {
+	margin : 10px 0;
+}
+.contentbox {
+	margin : 10px 0;
+}

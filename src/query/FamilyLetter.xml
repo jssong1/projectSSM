@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ssm.cm.dao.FamilyLetterDao">
+	
+	<resultMap type="ssm.mi.vo.TMemberVO" id="TMemberVO">
+	    <result property="ttNo" 			column="TT_NO"/>
+	    <result property="ttName" 			column="TT_NAME"/>
+	</resultMap>
+	
+	<resultMap type="ssm.cm.vo.FamilyLetterVO" id="flVO">
+	    <result property="flNo" 			column="FL_NO"/>
+	    <result property="flTitle" 			column="FL_TITLE"/>
+	    <result property="flContents" 		column="FL_CONTENTS"/>
+	    <result property="ttNo" 			column="TT_NO"/>
+	    <result property="flFile" 			column="FL_FILE"/>
+	    <result property="flInsertdate" 	column="FL_INSERTDATE"/>
+	    <result property="flUpdatedate" 	column="FL_UPDATEDATE"/>
+	    <result property="flDeleteyn" 		column="FL_DELETEYN"/>
+	    <result property="flViews" 			column="FL_VIEWS"/>
+	    <result property="pageNo"		    column="PAGENO"/>
+		<result property="listSize"		    column=""/>
+		<result property="totalCount"		column="TOTALCOUNT"/>
+	    <collection property="tMembervo" 	resultMap="TMemberVO"/>
+	</resultMap>
+	
+	<select id ="fllist" parameterType="ssm.cm.vo.FamilyLetterVO" resultMap="flVO">
+		SELECT 
+		*
+		FROM
+			(SELECT 
+					A.FL_NO, 
+					B.TT_NAME, 
+					A.FL_TITLE, 
+					A.FL_INSERTDATE,
+					A.FL_FILE,
+					A.FL_VIEWS,
+					CEIL(ROW_NUMBER() OVER(ORDER BY A.FL_NO DESC)/ #{listSize}) PAGENO,
+	     			COUNT(A.FL_NO) OVER() AS TOTALCOUNT 
+			FROM FAMILY_LETTER A, T_MEMBER B 
+			WHERE FL_DELETEYN ='Y'
+			AND A.TT_NO = B.TT_NO
+			<trim prefix="AND" >
+			<if test="search=='flTitle' ">
+				<![CDATA[FL_TITLE LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			<if test="search=='flContents'">
+				<![CDATA[FL_CONTENTS LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			<if test="search=='ttName'">
+				<![CDATA[TT_NAME LIKE '%'|| #{keyword} ||'%']]>
+			</if>
+			</trim>
+				) ABC
+				WHERE ABC.PAGENO = #{pageNo}
+				ORDER BY FL_NO DESC
+	</select>
+	
+	<select id="flChaebun" parameterType="ssm.cm.vo.FamilyLetterVO" resultMap="flVO">
+		
+		SELECT
+		TO_CHAR(NVL(MAX(SUBSTR(FL_NO,-4)),0)+1) FL_NO
+		FROM FAMILY_LETTER
+		
+	</select>
+	
+	<insert id="flInsert" parameterType="ssm.cm.vo.FamilyLetterVO">
+	
+		INSERT INTO FAMILY_LETTER(FL_NO,TT_NO,FL_TITLE,FL_CONTENTS,FL_FILE,FL_INSERTDATE,FL_DELETEYN)
+		VALUES(#{flNo},#{ttNo},#{flTitle},#{flContents},#{flFile},SYSDATE,'Y')
+	
+	</insert>
+	
+	<select id="pwdConfirm" parameterType="ssm.cm.vo.FamilyLetterVO" resultType="int">
+		SELECT NVL((SELECT 1 
+            FROM FAMILY_LETTER A, T_MEMBER B 
+            WHERE A.TT_NO = B.TT_NO
+            AND A.FL_NO = #{param1.flNo}
+            AND B.TT_PW = #{param2}),0)as result
+		FROM dual
+	</select>
+	
+	<update id="flUpdate" parameterType="ssm.cm.vo.FamilyLetterVO">
+	
+		UPDATE FAMILY_LETTER SET 
+								 FL_TITLE = #{flTitle}
+								,FL_CONTENTS = #{flContents}
+								,FL_FILE = #{flFile}
+								,FL_UPDATEDATE = SYSDATE
+		WHERE 					 FL_NO = #{flNo}						
+		AND  					 FL_DELETEYN = 'Y'
+	</update>
+	
+	<update id="flDelete" parameterType="ssm.cm.vo.FamilyLetterVO">
+	
+		UPDATE FAMILY_LETTER SET 
+								 FL_UPDATEDATE = SYSDATE
+								,FL_DELETEYN = 'N' 
+		WHERE 					 FL_NO = #{flNo}						
+		AND  					 FL_DELETEYN = 'Y'
+	</update>
+	
+	<select id="flDetail" parameterType="ssm.cm.vo.FamilyLetterVO" resultMap="flVO">
+		SELECT
+				A.FL_NO, 
+				B.TT_NAME, 
+				A.FL_TITLE, 
+				A.FL_CONTENTS, 
+				A.FL_FILE, 
+				A.FL_INSERTDATE, 
+				A.FL_UPDATEDATE,
+				A.FL_DELETEYN
+		FROM FAMILY_LETTER A, T_MEMBER B
+		WHERE FL_NO =#{flNo}
+		AND FL_DELETEYN='Y'
+		AND A.TT_NO = B.TT_NO
+	</select>
+	
+	<update id="flViews" parameterType="ssm.cm.vo.FamilyLetterVO">
+	
+		UPDATE FAMILY_LETTER SET 
+								 FL_VIEWS = FL_VIEWS +1
+		WHERE 					 FL_NO = #{flNo}						
+		AND  					 FL_DELETEYN = 'Y'
+	</update>
+	
+</mapper>

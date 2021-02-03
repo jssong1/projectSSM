@@ -1,0 +1,108 @@
+html, body, div, span{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	
+}
+
+
+.float-frame {
+	background : #eee;
+	border : 1px solid #ddd;
+	padding : 5px;
+	overflow : hidden;
+}
+.small-unit {
+	float : left;
+	width : 480px;
+	height : 480px;
+	color : #fff;
+	background : #333;
+	margin : 5px;
+}
+/*
+.big-area {
+	float : left;
+	width : 100px;
+	margin : 0 10px 0 0;
+	padding : 10px;
+	background : #999;
+}
+
+*/
+
+.mainImg {
+    width: 634px;
+    height: 594px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    color : #fff;
+    background : #333;
+}
+#login {
+	float : left;
+	width : 30%;
+	height : 250px;
+	color : #fff;
+	background : #333;
+	margin : 5px;
+}
+#link1{
+	float : left;
+	width : 10%;
+	height : 120px;
+	color : #fff;
+	background : #333;
+	margin : 5px;
+}
+#link2{
+	float : left;
+	width : 10%;
+	height : 120px;
+	color : #fff;
+	background : #333;
+	margin : 5px;
+}
+
+#vedio {
+	clear : both;
+	float : left;
+	width : 30%;
+	height : 150px;
+	color : #fff;
+	background : #333;
+	margin : 5px;
+}
+
+#notice {
+	width : 10%;
+	height : 140px;
+	color : #fff;
+	clear : both;
+	float : left;
+	background : #333;
+	margin : 5px;
+}
+#activityNotice {
+	float : left;
+	width : 10%;
+	height : 140px;
+	color : #fff;
+	background : #333;
+	margin : 5px;
+}
+ul{
+	list-style:none;
+    margin:0;
+    padding:0;
+}
+li{
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+   	border : 0;
+   	float: left;
+}

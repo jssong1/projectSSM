@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cm.dao.QnAAnswerDao">
+
+	<resultMap type="ssm.cm.vo.QnAAnswerVO" id="qaVO">
+	    <result property="qaNo" 			column="QA_NO"/>
+	    <result property="qbNo" 			column="QB_NO"/>
+	    <result property="qaContents" 		column="QA_CONTENTS"/>
+	    <result property="ttNo" 			column="TT_NO"/>
+	    <result property="qaInsertdate" 	column="QA_INSERTDATE"/>
+	    <result property="qaUpdatedate" 	column="QA_UPDATEDATE"/>
+	    <result property="qaDeleteyn" 		column="QA_DELETEYN"/>
+	    <result property="ttName" 			column="TT_NAME"/>
+	    <result property="ttImage" 			column="TT_IMAGE"/>
+	</resultMap>
+
+
+	<!-- 댓글리스트 조회 -->
+	<select id="qaList" parameterType="ssm.cm.vo.QnAAnswerVO" resultMap="qaVO">
+		SELECT
+		      A.QA_NO
+		     ,A.QB_NO
+		     ,A.TT_NO
+		     ,A.QA_CONTENTS
+		     ,A.QA_INSERTDATE
+		     ,A.QA_UPDATEDATE
+		     ,B.TT_NAME
+		     ,B.TT_IMAGE
+		FROM QNA_ANSWER A,
+			 T_MEMBER B
+		WHERE QB_NO = #{qbNo}
+		AND B.TT_NO=A.TT_NO
+		AND QA_DELETEYN = 'Y'
+		ORDER BY QA_NO ASC
+	</select>
+
+
+	<!-- Chaebun logic -->	
+	<select id="qaChaebun" resultMap="qaVO">
+		SELECT
+		TO_CHAR(NVL(MAX(SUBSTR(QA_NO,4)),0) + 1) AS QA_NO 
+ 	    FROM QNA_ANSWER
+	</select>
+	
+	
+	<!-- 댓글 등록 -->
+	<insert id="qaInsert" parameterType="ssm.cm.vo.QnAAnswerVO">
+		INSERT INTO QNA_ANSWER(
+			QA_NO
+		   ,QB_NO
+		   ,TT_NO
+		   ,QA_CONTENTS
+		   ,QA_DELETEYN
+		   ,QA_INSERTDATE
+		)VALUES(
+			#{qaNo}
+		   ,#{qbNo}
+		   ,#{ttNo}
+		   ,#{qaContents}
+		   ,'Y'
+		   ,SYSDATE
+		)
+	</insert>
+
+
+	<!-- 댓글 수정 -->
+	<update id="qaUpdate" parameterType="ssm.cm.vo.QnAAnswerVO">
+		UPDATE QNA_ANSWER
+		SET 
+		    QA_CONTENTS = #{qaContents},
+		    QA_UPDATEDATE = SYSDATE
+		WHERE QA_DELETEYN = 'Y'
+		AND QA_NO = #{qaNo}
+	</update>
+
+
+	<!-- 댓글 삭제 -->
+	<delete id="qaDelete" parameterType="ssm.cm.vo.QnAAnswerVO">
+		UPDATE QNA_ANSWER
+		SET 
+		    QA_DELETEYN = 'N',
+		    QA_UPDATEDATE = SYSDATE
+		WHERE QA_DELETEYN = 'Y'
+		AND QA_NO = #{qaNo}
+	</delete>
+</mapper>

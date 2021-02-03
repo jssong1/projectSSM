@@ -1,0 +1,35 @@
+.modal_content table {
+	border : 1px solid #d5d5d5;
+	width : 100%;
+	margin : 0 auto;
+	border-collapse: collapse;
+}
+.modal_content th {
+	width : 90px;
+	color : black;
+	background-color: #53888b91;
+}
+.modal_content td {
+	height : 40px;
+	text-align : left;
+	text-indent : 10px;
+	color : black;
+	border : 1px solid #d5d5d5;
+}
+
+h4 {
+	color : black !important;
+}
+
+hr {
+	margin : 5px 0;
+}
+
+.modal_closd_btn {
+	margin : 5px 0;
+	padding : 5px;
+	color : black !important;
+	background-color: #fead09;
+	border-radius : 10px;
+}
+	

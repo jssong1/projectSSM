@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.np.dao.Non_CenterDAO">
+
+	<!-- 학생 예약내역 전체조회 -->
+	<resultMap type="ssm.np.vo.Non_CenterVO" id="nCenterVO">
+		<result property="ncNo" column="NC_NO"/>
+		<result property="ncName" column="NC_NAME"/>
+		<result property="ncPosition" column="NC_POSITION"/>
+		<result property="ncTel" column="NC_TEL"/>
+		<result property="ncEmail" column="NC_EMAIL"/>
+		<result property="ncAddress" column="NC_ADDRESS"/>
+		<result property="ncHomepage" column="NC_HOMEPAGE"/>
+		<result property="ncDeleteyn" column="NC_DELETEYN"/>
+		<result property="ncInsertdate" column="NC_INSERTDATE"/>
+		<result property="ncUpdatedtae" column="NC_UPDATEDATE"/>
+	</resultMap>
+	<select id ="nCenterList" resultMap="nCenterVO">
+		/* Mapper - nCenterList*/	
+		SELECT	NC_NO
+			,NC_NAME
+			,NC_POSITION
+			,NC_TEL
+			,NC_EMAIL
+			,NC_ADDRESS
+			,NC_HOMEPAGE
+			,NC_DELETEYN
+			,NC_INSERTDATE
+			,NC_UPDATEDATE
+		FROM NON_CENTER
+		WHERE NC_DELETEYN ='Y'
+	</select>
+</mapper>

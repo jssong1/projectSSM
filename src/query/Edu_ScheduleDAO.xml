@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cg.dao.Edu_ScheduleDAO">
+   <!-- 달력 일정 조회 -->
+   <resultMap type="ssm.cg.vo.Edu_ScheduleVO" id="esList">
+      <result property="esNo" column="ES_NO"/>
+      <result property="esTime" column="ES_TIME"/>
+      <result property="esDeleteyn" column="ES_DELETEYN"/>
+      <result property="ttNo" column="TT_NO"/>
+      <result property="vrDate" column="VR_DATE"/>
+      <result property="vrStatus" column="VR_STATUS"/>
+      <result property="vrTime" column="VR_TIME"/>
+   </resultMap>
+   
+   <!-- 학생 예약내역 전체조회 -->
+   <resultMap type="ssm.cg.vo.Edu_ScheduleVO" id="eRsvList">
+      <result property="vrNo" column="VR_NO"/>
+      <result property="ssNo" column="SS_NO"/>
+      <result property="ttNo" column="TT_NO"/>
+      <result property="vrTime" column="VR_TIME"/>
+      <result property="vrField" column="VR_FIELD"/>
+      <result property="vrInsertdate" column="VR_INSERTDATE"/>
+      <result property="vrStatus" column="VR_STATUS"/>
+      <result property="vrDate" column="VR_DATE"/>
+      <result property="code" column="CODE"/>
+   </resultMap>
+   
+   <!-- 학생 예약내역 상세조회 -->
+   <resultMap type="ssm.cg.vo.Edu_ScheduleVO" id="eRsvDetail">
+      <result property="vrNo" column="VR_NO"/>
+      <result property="ssNo" column="SS_NO"/>
+      <result property="vrTime" column="VR_TIME"/>
+      <result property="vrField" column="VR_FIELD"/>
+      <result property="vrStatus" column="VR_STATUS"/>
+      <result property="vrDate" column="VR_DATE"/>
+      <result property="vrContents" column="VR_CONTENTS"/>
+      <result property="vcComments" column="VC_COMMENTS"/>
+   </resultMap>
+   
+   <sql id="rsvCommon">
+      SELECT DISTINCT C.VR_NO
+           ,D.TT_NO
+              ,A.SS_NAME AS SS_NO
+              ,C.VR_STATUS AS VR_STATUS
+              ,B.NAME AS CODE
+              ,G.NAME AS VR_FIELD
+              ,TO_CHAR(C.VR_DATE, 'YYYY-MM-DD') AS VR_DATE
+              ,TO_CHAR(C.VR_INSERTDATE, 'YYYY-MM-DD') AS VR_INSERTDATE
+              ,F.TIME AS VR_TIME
+        FROM S_MEMBER A, CODE_TABLE B, VISITCOUNSEL_RSV C JOIN EDU_SCHEDULE D
+        ON (C.TT_NO = D.TT_NO), CODE_VISITTIMETABLE F, CODE_TABLE G
+        WHERE C.SS_NO = A.SS_NO
+        AND B.CODE = C.VR_STATUS
+        AND G.CODE = C.VR_FIELD
+        AND F.TIMENO = C.VR_TIME
+        <trim prefix="AND">
+           <if test="keyword != null">
+              <![CDATA[G.NAME=#{keyword}]]>
+           </if>
+           <if test="search == 'vrStatus'">
+              <![CDATA[B.NAME=#{vrStatus}]]>
+           </if>
+        </trim>
+   </sql>
+
+   <select id="eduScheduleList" parameterType="ssm.cg.vo.Edu_ScheduleVO" resultMap="esList">
+      SELECT DISTINCT A.ES_NO
+              ,A.ES_TIME 
+              ,A.TT_NO
+              ,TO_CHAR(NVL(C.EC_TIME, 0)) AS ES_DELETEYN
+              ,A.ED_TIME AS VR_TIME
+              ,TO_CHAR(TO_DATE(A.ED_DATE), 'YYYY-MM-DD') AS VR_DATE
+              ,TO_CHAR(NVL(B.NAME, 0)) AS VR_STATUS
+        FROM EDU_CLOSE_TIME C 
+        RIGHT JOIN EDU_DATE_MONTH_ A
+                 ON(EC_DATE  = ED_DATE AND EC_TIMENO = ED_TIMENO)
+        LEFT JOIN COUNSEL_STATUS B 
+                 ON(A.TT_NO = B.TT_NO 
+                 AND B.VR_DATE = A.ED_DATE 
+                 AND A.TT_NO = B.TT_NO 
+                 AND A.ED_TIMENO = B.VR_TIME)
+       WHERE A.TT_NO = #{ttNo}
+   </select>
+   
+   <select id="eduRsvList" parameterType="ssm.cg.vo.VisitCounsel_EduRsvVO" resultMap="eRsvList">
+      SELECT DISTINCT VR_NO
+           ,TT_NO
+            ,SS_NO
+            ,VR_STATUS
+            ,CODE
+            ,VR_FIELD
+            ,VR_DATE
+            ,VR_INSERTDATE
+            ,VR_TIME
+      FROM
+         (SELECT LIST.*, ROWNUM AS RNO
+          FROM
+             (<include refid="rsvCommon"></include>
+              AND C.TT_NO = #{ttNo} ORDER BY VR_NO) LIST)
+      <where>
+         <if test="startRow != null and startRow != ''">
+            <if test="endRow != null and endRow != ''">
+               RNO BETWEEN #{startRow} AND #{endRow}
+            </if>
+         </if>
+      </where>
+      ORDER BY VR_NO DESC
+   </select>
+   
+   <update id="esUpdate" parameterType="ssm.cg.vo.Edu_ScheduleVO">
+      UPDATE EDU_SCHEDULE
+      <choose>
+         <when test="esTime == '01'">
+            SET ES_TIME = REPLACE(ES_TIME, #{esTime}, '10')
+         </when>
+      </choose> 
+      <choose>
+         <when test="esTime == '02'">
+            SET ES_TIME = REPLACE(ES_TIME, #{esTime}, '20')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '03'">
+            SET ES_TIME = REPLACE(ES_TIME, #{esTime}, '30')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '04'">
+            SET ES_TIME = REPLACE(ES_TIME, #{esTime}, '40')
+         </when>
+      </choose> 
+      <choose>
+         <when test="esTime == '05'">
+            SET ES_TIME = REPLACE(ES_TIME, #{esTime}, '50')
+         </when>
+      </choose> 
+      <choose>
+         <when test="esTime == '06'">
+            SET ES_TIME = REPLACE(ES_TIME, #{esTime}, '60')
+         </when>
+      </choose>           
+      WHERE ES_NO = #{esNo}      
+      AND TT_NO = #{ttNo}                         
+      AND ES_DAY = TO_CHAR(TO_DATE(#{vrDate}) , 'D')-1
+   </update>
+   
+   <update id="esRollback" parameterType="ssm.cg.vo.Edu_ScheduleVO">
+      UPDATE EDU_SCHEDULE
+      <choose>
+         <when test="esTime == '01'">
+            SET ES_TIME = REPLACE(ES_TIME, '10', '01')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '02'">
+            SET ES_TIME = REPLACE(ES_TIME, '20', '02')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '03'">
+            SET ES_TIME = REPLACE(ES_TIME, '30', '03')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '04'">
+            SET ES_TIME = REPLACE(ES_TIME, '40', '04')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '05'">
+            SET ES_TIME = REPLACE(ES_TIME, '50', '05')
+         </when>
+      </choose>
+      <choose>
+         <when test="esTime == '06'">
+            SET ES_TIME = REPLACE(ES_TIME, '60', '06')
+         </when>
+      </choose>
+      WHERE ES_NO = #{esNo}      
+      AND TT_NO = SUBSTR(#{ttNo}, 2)                        
+      AND ES_DAY = TO_CHAR(TO_DATE(#{vrDate}) , 'D')-1
+   </update>
+
+   <select id="eduRsvDetail" parameterType="ssm.cg.vo.Edu_ScheduleVO" resultMap="eRsvDetail">
+      SELECT A.VR_NO
+            ,(SELECT B.SS_NAME FROM S_MEMBER B WHERE SS_NO=A.SS_NO) SS_NO
+            ,TO_CHAR(A.VR_DATE, 'YYYY-MM-DD') AS VR_DATE
+             ,(SELECT B.NAME FROM CODE_TABLE B WHERE A.VR_FIELD=B.CODE) VR_FIELD
+           ,(SELECT B.TIME FROM CODE_VISITTIMETABLE B WHERE A.VR_TIME=B.TIMENO) VR_TIME
+            ,(SELECT B.NAME FROM CODE_TABLE B WHERE A.VR_STATUS=B.CODE) VR_STATUS
+            ,NVL(A.VR_CONTENTS ,'-') AS VR_CONTENTS
+            ,(SELECT VC_COMMENTS FROM VISIT_COMMENT WHERE VR_NO = #{vrNo} AND VC_DELETEYN = 'Y') VC_COMMENTS
+      FROM VISITCOUNSEL_RSV A
+      WHERE A.TT_NO = #{ttNo}
+      AND A.VR_NO = #{vrNo}
+   </select>
+   
+   <update id="vrStatusUpdate" parameterType="ssm.cg.vo.Edu_ScheduleVO">
+      UPDATE VISITCOUNSEL_RSV
+      SET VR_STATUS = #{vrStatus}
+      WHERE TT_NO = #{ttNo}
+      AND VR_NO = #{vrNo}
+      AND VR_TIME = #{vrTime}
+      AND VR_DATE = #{vrDate}
+   </update>
+   
+   <select id="listCnt"  parameterType="ssm.cg.vo.Edu_ScheduleVO" resultType="int">
+      SELECT NVL(COUNT(1), 0) AS TOTAL
+      FROM
+         (SELECT LIST.*, ROWNUM AS RNO
+          FROM
+             (<include refid="rsvCommon"></include>
+              AND C.TT_NO = #{ttNo}) LIST)
+   </select>
+</mapper>

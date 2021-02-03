@@ -1,0 +1,219 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+ <% request.setCharacterEncoding("UTF-8"); 	%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Insert title here</title>
+		<link rel="stylesheet" href="/common/ssmCss/s_base.css">
+		<link rel="stylesheet" href="/common/ssmCss/s_content.css">
+		<link rel="stylesheet" href="/common/ssmCss/s_layout.css">
+		<script src="/include/js/jquery-1.11.3.min.js"></script>
+ 
+	    <style>
+   /* The Modal (background) */
+    .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 800px; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+    
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 100px auto; /* 15% from the top and centered */
+            padding: 10px;
+            border: 1px solid #888;
+            width: 30%; /* Could be more or less, depending on screen size */    
+                    
+        }
+        
+        
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .view_box td {
+			color: black !important;
+		}
+		
+		.comm_tit span {
+			color : black;
+		}
+		
+		.popBtn {
+			background-color: #fead09;
+		    color: white;
+		    width: 60px;
+		    padding: 5px;
+		    border-radius: 50px/50px;
+		    margin : 10px 0;
+		}
+		
+		.view_box input[type=radio]{
+			margin : 0 10px; 
+		}
+#content{position:relative; margin:0 0 0 0px; /*margin:0 0 0 300px;*/ padding:0 0 70px 0; min-height:400px; min-width:320px;}
+	 
+		</style>
+	    <!-- The Modal -->
+	        <!--End Modal-->
+	    <script type="text/javascript">
+	      
+	        $(document).ready(function() {
+	        	$('.js-sms-content').keyup(function(){
+					cut_1000(this);
+		        });
+		
+		        $('.js-send-sms').click(function(){
+		            if(getTextLength($('.js-sms-content').val()) > 1000){
+		                alert("문자는 1000바이트 이하로 적어 주세요.");
+		                return false;
+		            }else{
+		                alert("문자가 1000바이트 이하입니다.");
+		            }
+		        });
+				
+				$("#booking").click(function(){
+					var ttNo = $("#modal_ttNo").text();
+					var ssNo = $("#modal_ssNo").text();
+					var vrDate = $("#modal_vrDate").text();
+					var vrTime = $("#modal_vrTime").text();
+					
+					//alert(ttNo);
+					$("#vrDate").val(vrDate);
+					$("#vrTime").val(vrTime);
+					$("#ttNo").val(ttNo);
+					$("#ssNo").val(ssNo);
+					//alert(">>> f: " +$("#vrDate").val());
+			
+					$("#vrPop").attr({
+						"method":"POST",
+						"action":"/visitCounsel/insertBooking.ssm"						
+					});					
+					$("#vrPop").submit();
+				});//write click
+	        });//ready
+	        /**
+		     * 한글포함 문자열 길이를 구한다
+		     */
+		    function getTextLength(str) {
+		        var len = 0;
+		        for (var i = 0; i < str.length; i++) {
+		            if (escape(str.charAt(i)).length == 6) {
+		                len++;
+		            }
+		            len++;
+		        }
+		        return len;
+		    }//getTextLength
+		
+		    function cut_1000(obj){
+		        var text = $(obj).val();
+		        var leng = text.length;
+		        while(getTextLength(text) > 1000){
+		            leng--;
+		            text = text.substring(0, leng);
+		        }
+		        $(obj).val(text);
+		        $('.bytes').text(getTextLength(text));
+		    }//cut_1000
+	        
+	        //팝업 Close 기능
+	        function close_pop(flag) {
+	             $('#myModal33').hide();
+	        };
+	       
+
+
+
+	      </script>
+	</head>
+	<body>
+		<form name="vrPop" id="vrPop" 
+		method ="POST"
+		enctype="application/x-www-form-urlencoded">
+			<div id="myModal33" class="modal" >
+		    	<!-- Modal content -->
+		      	<div class="modal-content">
+		      	<div id="content"  style="margin:auto; padding-bottom: 0px;">
+		      		<div class="comm_tit mt_10" style="margin:auto;">
+						<span>학생 방문상담 예약 신청</span>
+					</div>
+		      		<p></p>
+		      		<hr/>
+		      		<table class="view_box mt_5" summary="예약신청정보 입니다." style="margin:auto; width:100%;" >
+                     <!--caption>예약신청</caption-->
+                     <colgroup>
+                     <col width="20%">
+                     <col width="80%">
+                     </colgroup>
+                  <tr>
+                     <td colspan="3" align="center"><h4> 예약 하기   </h4></td>
+                  </tr>
+                  <tr>
+                     <th align="center">교사 이름</th>
+                     <td ><input type="hidden" name="ttNo" id="modal_ttNo"  style="align:left;" readonly>
+                     <input name="ttName" id="modal_ttName"  style="align:left;" readonly></td>
+                  </tr>
+                  <tr>
+                     <th align="center">예약 날짜</th>
+                     <td><input name="vrDate" id="modal_vrDate" readonly></td>      
+                  </tr>
+                  <tr>
+                     <th align="center">예약 시간</th>
+                     <td><input name="vrTime" id="modal_vrTime" readonly></td>
+                  </tr>
+                  <tr>
+                     <th align="center">예약 학생번호</th>
+                     
+                     <td><input type="hidden"  name="ssNo" id="modal_ssNo" >
+                     <input  name="ssName" id="modal_ssName" readonly></td>
+                  </tr>
+                  <tr>
+                     <th align="center">예약 분야</th>
+                     <td>
+                        <input type = "radio" name="vrField" id="modal_CAC" value="CAC" > 진로상담 
+                        <input type = "radio" name="vrField" id="modal_LIC" value="LIC" > 생활상담           
+                        <input type = "radio" name="vrField" id="modal_LEC" value="LEC" > 학습상담 
+                     </td>
+                  </tr>
+                  <tr>
+                     <th align="center">예약 내용</th>
+                     <td> 
+                     	
+                        <textarea name="vrContents" id="modal_vrContents" cols="60" rows="10" class="js-sms-content" placeholder="상담내용"></textarea>
+                        <div class="bytes-wrapper" style="color:black; text-align:right;">
+                            <span class="bytes" style="color:black;" >0</span>bytes/1000bytes
+                         </div>
+                     </td>
+                  </tr>
+
+               </table>
+					<input type="button" value="예약하기" class="popBtn" id="booking">
+					<input type="reset" value="다시 쓰기" class="popBtn">
+					<input type="reset" value="닫기" class="popBtn" onClick="close_pop();">
+					</div>
+		    	</div>
+		    </div>
+		</form>
+	</body>
+</html>

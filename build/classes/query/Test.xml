@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.cd.dao.TestDao">
+
+	<resultMap type="ssm.cd.vo.TestVO"  id="TestVO">
+		<result property="cdNo"           column="CD_NO"/>
+		<result property="ssNo"           column="SS_NO"/>
+		<result property="cdGrade"        column="CD_GRADE"/>
+		<result property="cdValue"        column="CD_VALUE"/>
+		<result property="cdUrl"          column="CD_URL"/>
+		<result property="cdInsertdate"   column="CD_INSERTDATE"/>
+		<result property="cdDeleteyn"     column="CD_DELETEYN"/>
+	</resultMap>
+	
+	<resultMap type="ssm.cd.vo.School_DataVO" id="SDVO">
+		<result property="sd_No" column="SD_NO"/>
+		<result property="sd_CampusName" column="SD_CAMPUSNAME"/>
+		<result property="sd_CollageInfoUrl" column="SD_COLLAGEINFOURL"/>
+		<result property="sd_Link" column="SD_LINK"/>
+		<result property="sd_SchoolGubun" column="SD_SCHOOLGUBUN"/>
+		<result property="sd_Adres" column="SD_ADRES"/>
+		<result property="sd_SchoolType"     column="SD_SCHOOLTYPE"/>
+		<result property="sd_Region"         column="SD_REGION"/>
+		<result property="sd_TotalCount"     column="SD_TOTALCOUNT"/>
+		<result property="sd_EstType"        column="SD_ESTTYPE"/>
+		<result property="sd_SchoolName"     column="SD_SCHOOLNAME"/>
+		<result property="sd_Seq"            column="SD_SEQ"/>
+		<result property="sd_listSize"       column="LISTSIZE" />
+		<result property="sd_Totalcount"     column="TOTALCOUNT"/>
+		<result property="sd_curPage"        column="PAGENO"/>
+		<result property="rowNum"        column="ROWNUMM"/>
+		<result property='region1' column=''/>
+		<result property='region2' column=''/>
+		<result property='region3' column=''/>
+		<result property='region4' column=''/>
+		<result property='region5' column=''/>
+		<result property='region6' column=''/>
+		<result property='region7' column=''/>
+		<result property='region8' column=''/>
+		<result property='region9' column=''/>
+		<result property='region10' column=''/>
+		<result property='region11' column=''/>
+		<result property='region12' column=''/>
+		<result property='region13' column=''/>
+		<result property='region14' column=''/>
+		<result property='region15' column=''/>
+		<result property='region16' column=''/>
+		<result property='region17' column=''/>
+		<result property='region18' column=''/>
+		<result property="sd_EstType1" column=""/>
+		<result property="sd_EstType2" column=""/>
+		<result property="sd_EstType3" column=""/>
+		<result property="go" column="" />
+		<result property="go2" column="" />
+	</resultMap>
+	
+	<resultMap type="ssm.cd.vo.Major_DataVO" id="MDVO">
+		<result property="mdNo"      column="MDNO"/>
+		<result property="lClass"    column="LCLASS"/>
+		<result property="facilName" column="FACILNAME"/>
+		<result property="majorSeq"  column="MAJORSEQ"/>
+		<result property="mClass"    column="MCLASS"/>
+		<result property="listSize"  column="LISTSIZE"/>
+		<result property="curPage"   column="PAGENO"/>
+		<result property="resCount"  column="RESCOUNT"/>
+		<result property="rowNum"    column="ROWNUMM"/>
+		<result property="go" column=""/>
+		<result property="lClass1" column=""/>
+		<result property="lClass2" column=""/>
+		<result property="lClass3" column=""/>
+		<result property="lClass4" column=""/>
+		<result property="lClass5" column=""/>
+		<result property="lClass6" column=""/>
+		<result property="lClass7" column=""/>
+		<result property="lClass8" column=""/> 
+	</resultMap>
+	<resultMap type="ssm.cd.vo.Major_DataVO" id="mDetail">
+		<result property="mdNo"      column="MDNO"/>
+		<result property="lClass"    column="LCLASS"/>
+		<result property="facilName" column="FACILNAME"/>
+		<result property="majorSeq"  column="MAJORSEQ"/>
+		<result property="mClass"    column="MCLASS"/>
+	</resultMap>
+	<resultMap type="ssm.cd.vo.Job_DataVO" id="jDetail">
+			<result property="salary" column="SALARY" />
+			<result property="jobDicSeq" column="JOBDICSEQ" />
+			<result property="equalEmployment" column="EQUALEMPLOYMENT" />
+			<result property="possibility" column="POSSIBILITY" />
+			<result property="job" column="JOB" />
+			<result property="prospect" column="PROSPECT" />
+	</resultMap>
+	<resultMap type="ssm.cd.vo.Job_DataVO" id="jdvo">
+		<result property="jdNo" column="JDNO"/>
+		<result property="profession" column="PROFESSION"/>
+		<result property="summary" column="SUMMARY"/>
+		<result property="similarJob" column="SIMILARJOB"/>
+		<result property="salary" column="SALARY"/>
+		<result property="jobDicSeq" column="JOBDICSEQ"/>
+		<result property="equalEmployment" column="EQUALEMPLOYMENT"/>
+		<result property="totalCount" column="TOTALCOUNT"/>
+		<result property="ATCode" column="APTD_TYPE_CODE"/>
+		<result property="prospect" column="PROSPECT"/>
+		<result property="JCCode" column="JOB_CTG_CODE"/>
+		<result property="JCode" column="JOB_CODE"/>
+		<result property="job" column="JOB"/>
+		<result property="possibility" column="POSSIBILITY"/>
+		<result property="listSize"  column="LISTSIZE"/>
+		<result property="curPage"   column="PAGENO"/>
+		<result property="resCount"  column="RESCOUNT"/>
+		<result property="rowNum"    column="ROWNUMM"/>
+		<result property="go" column="GO"/>
+		<result property="go1" column="GO1"/>
+		<result property="go2" column="GO2"/>
+		<result property="JCCode1" column=""/>
+		<result property="JCCode2" column=""/>
+		<result property="JCCode3" column=""/>
+		<result property="JCCode4" column=""/>
+		<result property="JCCode5" column=""/>
+		<result property="JCCode6" column=""/>
+		<result property="JCCode7" column=""/>
+		<result property="JCCode8" column=""/>
+		<result property="JCCode9" column=""/>
+		<result property="JCCode10" column=""/>
+		<result property="JCCode11" column=""/>
+		<result property="JCCode12" column=""/>
+		<result property="JCCode13" column=""/>
+		<result property="JCCode14" column=""/>
+		<result property="JCCode15" column=""/>
+		<result property="JCCode16" column=""/>
+		<result property="JCCode17" column=""/>
+		<result property="JCCode18" column=""/>
+		<result property="JCCode19" column=""/>
+		<result property="JCCode20" column=""/>
+		<result property="JCCode21" column=""/>
+		<result property="JCCode22" column=""/>
+		<result property="JCCode23" column=""/>
+		<result property="JCCode24" column=""/>
+		<result property="JCCode25" column=""/>
+		<result property="JCCode26" column=""/>
+		<result property="JCCode27" column=""/>
+		<result property="JCCode28" column=""/>
+		<result property="JCCode29" column=""/>
+		<result property="JCCode30" column=""/>
+		<result property="JCCode31" column=""/>
+		<result property="JCCode32" column=""/>
+		<result property="JCCode33" column=""/>
+		<result property="JCCode34" column=""/>
+		<result property="JCCode35" column=""/>
+		<result property="ATCode1" column=""/>
+		<result property="ATCode2" column=""/>
+		<result property="ATCode3" column=""/>
+		<result property="ATCode4" column=""/>
+		<result property="ATCode5" column=""/>
+		<result property="ATCode6" column=""/>
+		<result property="ATCode7" column=""/>
+		<result property="ATCode8" column=""/>
+		<result property="ATCode9" column=""/>
+		<result property="ATCode10" column=""/>
+		<result property="ATCode11" column=""/>
+		<result property="ATCode12" column=""/>
+		<result property="ATCode13" column=""/>
+		<result property="ATCode14" column=""/>
+		<result property="ATCode15" column=""/>
+		<result property="ATCode16" column=""/>
+		<result property="ATCode17" column=""/>
+		<result property="ATCode18" column=""/>
+		<result property="ATCode19" column=""/>
+		<result property="ATCode20" column=""/>
+		<result property="ATCode21" column=""/>
+		<result property="ATCode22" column=""/>
+		<result property="ATCode23" column=""/>
+		<result property="ATCode24" column=""/>
+		<result property="ATCode25" column=""/>
+		<result property="ATCode26" column=""/>
+		<result property="ATCode27" column=""/>
+		<result property="ATCode28" column=""/>
+		<result property="ATCode29" column=""/>
+		<result property="ATCode30" column=""/>
+		<result property="ATCode31" column=""/>
+		<result property="ATCode32" column=""/>
+		<result property="ATCode33" column=""/>
+		<result property="ATCode34" column=""/>
+		<result property="ATCode35" column=""/>
+		<result property="ATCode36" column=""/>
+		<result property="ATCode37" column=""/>
+		<result property="ATCode38" column=""/>
+		<result property="ATCode39" column=""/>
+		<result property="ATCode40" column=""/>
+		<result property="ATCode41" column=""/>
+		<result property="ATCode42" column=""/>
+		<result property="ATCode43" column=""/>
+		<result property="ssalary" column=""/>
+		<result property="pprospect" column=""/>
+		<result property="ppossibility" column=""/>
+		<result property="eequalemployment" column=""/>
+	</resultMap>
+	<!-- 채번 가져오기 -->
+	<select id="makeChaebun" parameterType="ssm.cd.vo.TestVO" resultType="int">
+		SELECT NVL(MAX(SUBSTR(CD_NO,-4)),0)+1 AS CD_NO FROM CAREER_DESIGN
+	</select>
+	
+	<select id="getSs_grade" parameterType="ssm.cd.vo.TestVO" resultType="String">
+		SELECT SS_GRADE FROM S_MEMBER WHERE SS_NO=#{ssNo}
+	</select>
+	
+	<!-- 결과 저장하기 -->
+	<insert id="insertResult" parameterType="ssm.cd.vo.TestVO">
+	INSERT INTO CAREER_DESIGN(CD_NO,
+							  SS_NO,
+							  CD_GRADE,
+							  CD_VALUE,
+							  CD_URL,
+							  CD_INSERTDATE,
+							  CD_DELETEYN)
+	VALUES                   (#{cdNo},
+						      #{ssNo},
+						      #{cdGrade},
+						      #{cdValue},
+						      #{cdUrl},
+						      SYSDATE,
+						      'Y') 
+						      
+	</insert>
+
+	<!-- 학교정보 List Select -->	
+	<select id="schoolInfoList" parameterType="ssm.cd.vo.School_DataVO" resultMap="SDVO" >
+		SELECT
+				#{sd_listSize} AS LISTSIZE,
+				B.*
+		FROM
+		(
+			SELECT
+			  A.SD_NO,
+		      A.SD_CAMPUSNAME,
+		      A.SD_COLLAGEINFOURL,
+		      A.SD_SCHOOLTYPE,
+		      A.SD_LINK,
+		      A.SD_SCHOOLGUBUN,
+		      A.SD_ADRES,
+		      A.SD_REGION,
+		      A.SD_TOTALCOUNT,
+		      A.SD_ESTTYPE,
+		      A.SD_SCHOOLNAME,
+		      A.SD_SEQ,
+		      CEIL(ROW_NUMBER() OVER(ORDER BY A.SD_NO)/#{sd_listSize}) PAGENO,
+		      ROW_NUMBER() OVER(ORDER BY A.SD_NO ASC) AS ROWNUMM,
+		      COUNT(A.SD_NO) OVER() AS TOTALCOUNT
+			FROM SCHOOL_DATA A
+			WHERE 1=1
+				<if test="sd_SchoolType != null and sd_SchoolType != '' and sd_SchoolType != 'all' ">
+					AND A.SD_SCHOOLTYPE = #{sd_SchoolType}
+				</if>
+				<if test="go != '' and go != null ">
+					AND A.SD_REGION IN (
+					<trim suffixOverrides=",">
+					<if test="region1 != null and region1 != '' ">
+						#{region1},
+					</if>
+					<if test="region2 != null and region2 != '' ">
+						#{region2},
+					</if>
+					<if test="region3 != null and region3 != '' ">
+						#{region3},
+					</if>
+					<if test="region4 != null and region4 != '' ">
+						#{region4},
+					</if>
+					<if test="region5 != null and region5 != '' ">
+						#{region5},
+					</if>
+					<if test="region6 != null and region6 != '' ">
+						#{region6},
+					</if>
+					<if test="region7 != null and region7 != '' ">
+						#{region7},
+					</if>
+					<if test="region8 != null and region8 != '' ">
+						#{region8},
+					</if>
+					<if test="region9 != null and region9 != '' ">
+						#{region9},
+					</if>
+					<if test="region10 != null and region10 != '' ">
+						#{region10},
+					</if>
+					<if test="region11 != null and region11 != '' ">
+						#{region11},
+					</if>
+					<if test="region12 != null and region12 != '' ">
+						#{region12},
+					</if>
+					<if test=" region13 != null and region13 != '' ">
+						#{region13},
+					</if>
+					<if test="region14 != null and region14 != '' ">
+						#{region14},
+					</if>
+					<if test="region15 != null and region15 != '' ">
+						#{region15},
+					</if>
+					<if test="region16 != null and region16 != '' ">
+						#{region16},
+					</if>
+					<if test="region17 != null and region17 != '' ">
+						#{region17},
+					</if>
+					<if test="region18 != null and region18 != '' ">
+						#{region18},
+					</if>
+					</trim>
+					)
+				</if>
+				<if test="go2 != '' and go2 != null">
+					AND A.SD_ESTTYPE IN (
+						<trim suffixOverrides=",">
+							<if test="sd_EstType1 != null and sd_EstType1 != '' ">
+								#{sd_EstType1},
+							</if>
+							<if test="sd_EstType2 != null and sd_EstType2 != '' ">
+								#{sd_EstType2},
+							</if>
+							<if test="sd_EstType3 != null and sd_EstType3 != '' ">
+								#{sd_EstType3},
+							</if>
+						</trim>
+					)
+				</if>
+		)B
+		WHERE B.PAGENO = #{sd_curPage}
+	</select>
+	
+	<!-- 학과정보 List SELECT -->
+	<select id="majorList" parameterType="ssm.cd.vo.Major_DataVO" resultMap="MDVO">
+	SELECT
+				B.*
+		FROM
+		(
+			SELECT
+			  A.MDNO,
+		      A.LCLASS,
+		      A.FACILNAME,
+		      A.MAJORSEQ,
+		      A.MCLASS,
+		      A.TOTALCOUNT,
+		      CEIL(ROW_NUMBER() OVER(ORDER BY A.MDNO)/#{listSize}) PAGENO,
+		      ROW_NUMBER() OVER(ORDER BY A.MDNO ASC) AS ROWNUMM,
+		      COUNT(A.MDNO) OVER() AS RESCOUNT
+			FROM MAJOR_DATA A
+			WHERE 1=1
+			<if test="go != '' and go != null ">
+			AND A.LCLASS IN(
+			<trim suffixOverrides=",">
+			<if test="lClass2 != '' and lClass2 != null">
+				#{lClass2},
+			</if>
+			<if test="lClass3 != '' and lClass3 != null">
+				#{lClass3},
+			</if>
+			<if test="lClass4 != '' and lClass4 != null">
+				#{lClass4},
+			</if>
+			<if test="lClass5 != '' and lClass5 != null">
+				#{lClass5},
+			</if>
+			<if test="lClass6 != '' and lClass6 != null">
+				#{lClass6},
+			</if>
+			<if test="lClass7 != '' and lClass7 != null">
+				#{lClass7},
+			</if>
+			<if test="lClass8 != '' and lClass8 != null">
+				#{lClass8},
+			</if>
+			</trim>
+			) 
+			</if>
+		)B
+		WHERE B.PAGENO = #{curPage}
+	</select>
+	
+	<!-- detail selectOne -->
+	<select id="majorDetail" parameterType="ssm.cd.vo.Major_DataVO" resultMap="mDetail">
+		SELECT
+			  A.LCLASS,
+		      A.FACILNAME,
+		      A.MAJORSEQ,
+		      A.MCLASS,
+		      A.TOTALCOUNT
+		FROM MAJOR_DATA A
+		WHERE A.MAJORSEQ = #{majorSeq}
+	</select>
+	
+	<!-- jobList -->
+	<select id="jobList" parameterType="ssm.cd.vo.Job_DataVO" resultMap="jdvo">
+		SELECT
+				
+				<trim suffixOverrides=",">
+					B.*,
+					<if test="go != null and go != ''">
+						#{go,jdbcType=VARCHAR} AS GO,
+					</if>
+					<if test="go1 != null and go1 != ''">
+						#{go1,jdbcType=VARCHAR} AS GO1,
+					</if>
+					<if test="go2 != null and go2 != ''">
+						#{go2,jdbcType=VARCHAR} AS GO2,
+					</if>
+				</trim>
+				
+				
+		FROM
+		(
+			SELECT
+			  A.JDNO,
+		      A.PROFESSION,
+		      A.SUMMARY,
+		      A.SIMILARJOB,
+		      A.SALARY,
+		      A.JOBDICSEQ,
+		      A.EQUALEMPLOYMENT,
+		      A.TOTALCOUNT,
+		      A.APTD_TYPE_CODE,
+		      A.PROSPECT,
+		      A.JOB_CTG_CODE,
+		      A.JOB_CODE,
+		      A.JOB,
+		      A.POSSIBILITY,
+		      CEIL(ROW_NUMBER() OVER(ORDER BY A.JDNO)/#{listSize}) PAGENO,
+		      ROW_NUMBER() OVER(ORDER BY A.JDNO ASC) AS ROWNUMM,
+		      COUNT(A.JDNO) OVER() AS RESCOUNT
+			FROM JOB_DATA A
+			WHERE 1=1
+			<if test="go1 != '' and go1 != null">
+				<if test="ssalary != null and ssalary != '' ">
+				AND A.SALARY = #{ssalary}
+				</if>
+				<if test="pprospect != null and pprospect != '' ">
+				AND A.PROSPECT = #{pprospect}
+				</if>
+				<if test="ppossibility != null and ppossibility != '' ">
+				AND A.POSSIBILITY = #{ppossibility}
+				</if>
+				<if test="eequalemployment != null and eequalemployment != '' ">
+				AND A.EQUALEMPLOYMENT = #{eequalemployment}
+				</if>
+			</if>
+			<if test="go != '' and go != null">
+				AND A.JOB_CTG_CODE IN (
+					<trim suffixOverrides=",">
+						<if test="JCCode1 != null and JCCode1 != '' ">#{JCCode1},</if>
+						<if test="JCCode2 != null and JCCode2 != '' ">#{JCCode2},</if>
+						<if test="JCCode3 != null and JCCode3 != '' ">#{JCCode3},</if>
+						<if test="JCCode4 != null and JCCode4 != '' ">#{JCCode4},</if>
+						<if test="JCCode5 != null and JCCode5 != '' ">#{JCCode5},</if>
+						<if test="JCCode6 != null and JCCode6 != '' ">#{JCCode6},</if>
+						<if test="JCCode7 != null and JCCode7 != '' ">#{JCCode7},</if>
+						<if test="JCCode8 != null and JCCode8 != '' ">#{JCCode8},</if>
+						<if test="JCCode9 != null and JCCode9 != '' ">#{JCCode9},</if>
+						<if test="JCCode10 != null and JCCode10 != '' ">#{JCCode10},</if>
+						<if test="JCCode11 != null and JCCode11 != '' ">#{JCCode11},</if>
+						<if test="JCCode12 != null and JCCode12 != '' ">#{JCCode12},</if>
+						<if test="JCCode13 != null and JCCode13 != '' ">#{JCCode13},</if>
+						<if test="JCCode14 != null and JCCode14 != '' ">#{JCCode14},</if>
+						<if test="JCCode15 != null and JCCode15 != '' ">#{JCCode15},</if>
+						<if test="JCCode16 != null and JCCode16 != '' ">#{JCCode16},</if>
+						<if test="JCCode17 != null and JCCode17 != '' ">#{JCCode17},</if>
+						<if test="JCCode18 != null and JCCode18 != '' ">#{JCCode18},</if>
+						<if test="JCCode19 != null and JCCode19 != '' ">#{JCCode19},</if>
+						<if test="JCCode20 != null and JCCode20 != '' ">#{JCCode20},</if>
+						<if test="JCCode21 != null and JCCode21 != '' ">#{JCCode21},</if>
+						<if test="JCCode22 != null and JCCode22 != '' ">#{JCCode22},</if>
+						<if test="JCCode23 != null and JCCode23 != '' ">#{JCCode23},</if>
+						<if test="JCCode24 != null and JCCode24 != '' ">#{JCCode24},</if>
+						<if test="JCCode25 != null and JCCode25 != '' ">#{JCCode25},</if>
+						<if test="JCCode26 != null and JCCode26 != '' ">#{JCCode26},</if>
+						<if test="JCCode27 != null and JCCode27 != '' ">#{JCCode27},</if>
+						<if test="JCCode28 != null and JCCode28 != '' ">#{JCCode28},</if>
+						<if test="JCCode29 != null and JCCode29 != '' ">#{JCCode29},</if>
+						<if test="JCCode30 != null and JCCode30 != '' ">#{JCCode30},</if>
+						<if test="JCCode31 != null and JCCode31 != '' ">#{JCCode31},</if>
+						<if test="JCCode32 != null and JCCode32 != '' ">#{JCCode32},</if>
+						<if test="JCCode33 != null and JCCode33 != '' ">#{JCCode33},</if>
+						<if test="JCCode34 != null and JCCode34 != '' ">#{JCCode34},</if>
+						<if test="JCCode35 != null and JCCode35 != '' ">#{JCCode35},</if>
+					</trim>
+				)
+			</if>
+			<if test="go2 != '' and go2 != null">
+				AND A.APTD_TYPE_CODE IN (
+					<trim suffixOverrides=",">
+						<if test="ATCode1 != null and ATCode1 != '' ">#{ATCode1},</if>
+						<if test="ATCode2 != null and ATCode2 != '' ">#{ATCode2},</if>
+						<if test="ATCode3 != null and ATCode3 != '' ">#{ATCode3},</if>
+						<if test="ATCode4 != null and ATCode4 != '' ">#{ATCode4},</if>
+						<if test="ATCode5 != null and ATCode5 != '' ">#{ATCode5},</if>
+						<if test="ATCode6 != null and ATCode6 != '' ">#{ATCode6},</if>
+						<if test="ATCode7 != null and ATCode7 != '' ">#{ATCode7},</if>
+						<if test="ATCode8 != null and ATCode8 != '' ">#{ATCode8},</if>
+						<if test="ATCode9 != null and ATCode9 != '' ">#{ATCode9},</if>
+						<if test="ATCode10 != null and ATCode10 != '' ">#{ATCode10},</if>
+						<if test="ATCode11 != null and ATCode11 != '' ">#{ATCode11},</if>
+						<if test="ATCode12 != null and ATCode12 != '' ">#{ATCode12},</if>
+						<if test="ATCode13 != null and ATCode13 != '' ">#{ATCode13},</if>
+						<if test="ATCode14 != null and ATCode14 != '' ">#{ATCode14},</if>
+						<if test="ATCode15 != null and ATCode15 != '' ">#{ATCode15},</if>
+						<if test="ATCode16 != null and ATCode16 != '' ">#{ATCode16},</if>
+						<if test="ATCode17 != null and ATCode17 != '' ">#{ATCode17},</if>
+						<if test="ATCode18 != null and ATCode18 != '' ">#{ATCode18},</if>
+						<if test="ATCode19 != null and ATCode19 != '' ">#{ATCode19},</if>
+						<if test="ATCode20 != null and ATCode20 != '' ">#{ATCode20},</if>
+						<if test="ATCode21 != null and ATCode21 != '' ">#{ATCode21},</if>
+						<if test="ATCode22 != null and ATCode22 != '' ">#{ATCode22},</if>
+						<if test="ATCode23 != null and ATCode23 != '' ">#{ATCode23},</if>
+						<if test="ATCode24 != null and ATCode24 != '' ">#{ATCode24},</if>
+						<if test="ATCode25 != null and ATCode25 != '' ">#{ATCode25},</if>
+						<if test="ATCode26 != null and ATCode26 != '' ">#{ATCode26},</if>
+						<if test="ATCode27 != null and ATCode27 != '' ">#{ATCode27},</if>
+						<if test="ATCode28 != null and ATCode28 != '' ">#{ATCode28},</if>
+						<if test="ATCode29 != null and ATCode29 != '' ">#{ATCode29},</if>
+						<if test="ATCode30 != null and ATCode30 != '' ">#{ATCode30},</if>
+						<if test="ATCode31 != null and ATCode31 != '' ">#{ATCode31},</if>
+						<if test="ATCode32 != null and ATCode32 != '' ">#{ATCode32},</if>
+						<if test="ATCode33 != null and ATCode33 != '' ">#{ATCode33},</if>
+						<if test="ATCode34 != null and ATCode34 != '' ">#{ATCode34},</if>
+						<if test="ATCode35 != null and ATCode35 != '' ">#{ATCode35},</if>
+						<if test="ATCode36 != null and ATCode36 != '' ">#{ATCode36},</if>
+						<if test="ATCode37 != null and ATCode37 != '' ">#{ATCode37},</if>
+						<if test="ATCode38 != null and ATCode38 != '' ">#{ATCode38},</if>
+						<if test="ATCode39 != null and ATCode39 != '' ">#{ATCode39},</if>
+						<if test="ATCode40 != null and ATCode40 != '' ">#{ATCode40},</if>
+						<if test="ATCode41 != null and ATCode41 != '' ">#{ATCode41},</if>
+						<if test="ATCode42 != null and ATCode42 != '' ">#{ATCode42},</if>
+						<if test="ATCode43 != null and ATCode43 != '' ">#{ATCode43},</if>
+					</trim>
+				)
+			</if>
+		)B
+		WHERE B.PAGENO = #{curPage}
+	
+	</select>
+	
+	<select id="jobDetail" parameterType="ssm.cd.vo.Job_DataVO" resultMap="jDetail">
+		SELECT
+		      A.SALARY,
+		      A.JOBDICSEQ,
+		      A.EQUALEMPLOYMENT,
+		      A.PROSPECT,
+		      A.JOB,
+		      A.POSSIBILITY	
+		FROM JOB_DATA A
+		WHERE A.JOBDICSEQ = #{jobDicSeq}
+	</select>
+	<select id="testList" parameterType="ssm.cd.vo.TestVO" resultMap="TestVO">
+      SELECT
+           CD_NO,
+           SS_NO,
+           CD_GRADE,
+           CD_VALUE,
+           CD_URL,
+           CD_INSERTDATE
+      FROM CAREER_DESIGN
+      WHERE CD_DELETEYN = 'Y'
+      AND SS_NO = #{ssNo}
+   </select>
+</mapper>

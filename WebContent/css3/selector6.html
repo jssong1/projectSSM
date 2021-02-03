@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>jQuery Selector</title>
+		<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript">
+			
+			$(document).ready(function(){
+				
+				$("li").on("click", function(){
+					var i = $(this).index();
+					alert("LIST" + i);
+					$(this).css({ "color":"red"});
+					
+				});
+				
+				$("div").on("click", function(){
+					var wid = $(this).width();
+					$(this).height(wid);
+				});
+				
+				
+			});
+		</script>
+		<style type="text/css">			
+			ul li {
+				font-size:20px; 
+				color: blue;
+			}
+			
+			div {
+				width: 200px;
+				height: 400px;
+				margin: 50px;
+				background: blue;
+			}
+		</style>
+	</head>
+	<body>	
+		this() & index()
+		<hr>
+		<ul>
+			<li>LIST0</li>
+			<li>LIST1</li>
+			<li>LIST2</li>
+			<li>LIST3</li>
+			<li>LIST4</li>
+			<li>LIST5</li>
+			<li>LIST6</li>
+			<li>LIST7</li>
+			<li>LIST8</li>
+			<li>LIST9</li>
+		</ul>
+		<br>
+		.width(), .height()
+		<hr>
+		<div>box 크기 변경</div>
+	</body>
+</html>

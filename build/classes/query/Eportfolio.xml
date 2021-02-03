@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="ssm.ef.dao.EportfolioDao">
+
+	<!-- 조인에 필요--> 
+	
+	<!-- fm jr sr 세개중 선택된데이터 1개를 받아가지만 fmvo에 넣어가서 꺼내서 사용하겠다 -->
+	<resultMap type="ssm.mi.vo.FmmemberVO" id="FmmemberVO">
+	    <result property="fmGrade" 			column="FM_GRADE"/>
+	    <result property="fmClass" 			column="FM_CLASS"/>
+	    <result property="fmNum" 			column="FM_NUM"/>
+	</resultMap>
+	
+	<!-- 기초조사VO -->
+	<resultMap type="ssm.cd.vo.BasicinpormationVO" id="BasicinpormationVO">
+	    <result property="biWf" 			column="BI_WF"/> <!-- 희망하는 직무 -->
+	    <result property="biWi" 			column="BI_WI"/> <!-- 희망하는 산업 -->
+	</resultMap>
+	
+	<!-- 가치관설립VO -->
+	<resultMap type="ssm.cd.vo.ValuesettingVO" id="ValuesettingVO">
+	    <result property="ssNo" 			column="SS_NO"/>
+	    <result property="vsFirst" 			column="VS_FIRST"/>
+	    <result property="vsSecond" 		column="VS_SECOND"/>
+	    <result property="vsThird" 			column="VS_THIRD"/>
+	    <result property="vsInsertdate" 	column="VS_INSERTDATE"/>
+	    <result property="vsUpdatedate" 	column="VS_UPDATEDATE"/>
+	</resultMap>
+	
+	<resultMap type="ssm.mi.vo.TMemberVO" id="TMemberVO">
+	    <result property="ttName" 			column="TT_NAME"/>
+	</resultMap>
+	
+	<!-- 본인인 놈  -->
+	
+	<resultMap type="ssm.mi.vo.SMemberVO" id="smVO">
+	    <result property="ssNo" 					column="SS_NO"/>
+	    <result property="ssName" 					column="SS_NAME"/>
+		<result property="ssImage"					column="SS_IMAGE"/>
+		<result property="ssGrade"					column="SS_GRADE"/>
+		<collection property="fmMembervo" 			resultMap="FmmemberVO"/> <!-- fm jr sr 세개중 선택된데이터 1개를 받아가지만 fmvo에 넣어가서 꺼내서 사용하겠다 -->
+		<collection property="basicInpormationvo" 	resultMap="BasicinpormationVO"/>
+		<collection property="valueSettingvo" 		resultMap="ValuesettingVO"/>
+	</resultMap>
+	
+	<resultMap type="ssm.mi.vo.TMemberVO" id="tmVO">
+	    <result property="ttNo" 			column="TT_NO"/>
+	    <result property="ttId" 			column="TT_ID"/>
+	    <result property="ttPw" 			column="TT_PW"/>
+		<result property="ttImage"			column="TT_IMAGE"/>
+		<result property="ttGrade"			column="TT_GRADE"/>
+		<result property="ttClass"			column="TT_CLASS"/>
+		<result property="ttDeleteyn"		column="TT_DELETEYN"/>
+	</resultMap>
+	
+	<resultMap type="ssm.cd.vo.CareerdesignVO" id="CareerdesignVO">
+	    <result property="cdNo" 			column="CD_NO"/>
+	    <result property="cdValue" 			column="CD_VALUE"/>
+	    <result property="cdInsertdate" 	column="CD_INSERTDATE"/>
+		<result property="cdUrl"			column="CD_URL"/>
+		<result property="ssNo"				column="SS_NO"/>
+	</resultMap>
+	
+	<resultMap type="ssm.br.vo.NonprogramVO" id="NonprogramVO">
+	    <result property="npNo" 			column="NP_NO"/>
+	    <result property="npTitle" 			column="NP_TITLE"/>
+	    <result property="npPsdate" 		column="NP_PSDATE"/>
+		<result property="npPedate"			column="NP_PEDATE"/>
+		<result property="npCenter"			column="NP_CENTER"/>
+		<result property="aCode"			column="ACODE"/>
+		<result property="brpageNo"		    column="PAGENO"/>
+		<result property="listSize"		   	column=""/>
+		<result property="totalCount"		column="TOTALCOUNT"/>
+		<result property="rowNo"			column="ROWNO"/>
+		
+	</resultMap>
+	
+	<resultMap type="ssm.cg.vo.OnlineApplication_BoardVO" id="OnlineApplication_BoardVO">
+	    <result property="oaNo" 			column="OA_NO"/>
+	    <result property="oaInsertdate" 	column="OA_INSERTDATE"/>
+	    <result property="oaField" 			column="OA_FIELD"/>
+		<result property="cgpageNo"		    column="PAGENO"/>
+		<result property="listSize"		   	column=""/>
+		<result property="totalCount"		column="TOTALCOUNT"/>
+		<result property="rowNo"			column="ROWNO"/>
+		<collection property="tmemberVO" 	resultMap="TMemberVO"/>
+	</resultMap>
+	
+	<!-- 선생님 반학생 리스트 뽑아오는거 -->
+	<select id ="eflist" parameterType="ssm.mi.vo.TMemberVO" resultMap="smVO">
+	SELECT * 
+        FROM (
+		SELECT DISTINCT					
+                    C.SS_NAME,         
+                    C.SS_IMAGE,        
+					(SELECT F.NAME FROM CODE_TABLE F WHERE F.CODE=A.FM_GRADE) FM_GRADE,       
+					A.FM_CLASS,        
+					A.FM_NUM FM_NUM,		    
+                    A.SS_NO,             
+                    NVL(D.BI_WF,'데이터없음') as BI_WF,          
+                    NVL(D.BI_WI,'데이터없음') as BI_WI,           
+                    NVL(E.VS_FIRST,'데이터없음') as VS_FIRST                         
+		FROM 
+					FM_MEMBER A, 
+					T_MEMBER B,
+					S_MEMBER C, 
+					BASIC_INFORMATION D, 
+					VALUE_SETTING E
+                    
+		WHERE 	A.TT_NO 	=   #{ttNo} 
+		AND 	A.SS_NO 	= 	C.SS_NO    
+        AND 	A.SS_NO 	= 	D.SS_NO(+)     
+        AND 	A.SS_NO 	= 	E.SS_NO(+)      
+        AND 	A.DELETEYN ='Y'
+        
+        UNION ALL   
+		SELECT DISTINCT		
+                    C.SS_NAME,         
+                    C.SS_IMAGE,      
+                    (SELECT F.NAME FROM CODE_TABLE F WHERE F.CODE=A.JR_GRADE) JR_GRADE,       
+					A.JR_CLASS,        
+					A.JR_NUM FM_NUM,		    
+                    A.SS_NO,             
+                    NVL(D.BI_WF,'데이터없음') as BI_WF,          
+                    NVL(D.BI_WI,'데이터없음') as BI_WI,           
+                    NVL(E.VS_FIRST,'데이터없음') as VS_FIRST                    
+		FROM 
+					JR_MEMBER A, 
+					T_MEMBER B,
+					S_MEMBER C, 
+					BASIC_INFORMATION D, 
+					VALUE_SETTING E
+					
+		WHERE 	A.TT_NO 	=   #{ttNo} 
+		AND 	A.SS_NO 	= 	C.SS_NO    
+        AND 	A.SS_NO 	= 	D.SS_NO(+)     
+        AND 	A.SS_NO 	= 	E.SS_NO(+)      
+        AND 	A.DELETEYN ='Y'
+        
+        UNION ALL
+		SELECT DISTINCT
+                    C.SS_NAME,         
+                    C.SS_IMAGE, 
+                    (SELECT F.NAME FROM CODE_TABLE F WHERE F.CODE=A.SR_GRADE) SR_GRADE,          
+					A.SR_CLASS,        
+					A.SR_NUM FM_NUM,		    
+                    A.SS_NO,             
+                    NVL(D.BI_WF,'데이터없음') as BI_WF,          
+                    NVL(D.BI_WI,'데이터없음') as BI_WI,           
+                    NVL(E.VS_FIRST,'데이터없음') as VS_FIRST       
+		FROM 
+					SR_MEMBER A, 
+					T_MEMBER B,
+					S_MEMBER C, 
+					BASIC_INFORMATION D, 
+					VALUE_SETTING E
+					
+		WHERE 	A.TT_NO 	= 	#{ttNo}
+		AND 	A.SS_NO 	= 	C.SS_NO    
+        AND 	A.SS_NO 	= 	D.SS_NO(+)     
+        AND 	A.SS_NO 	= 	E.SS_NO(+)      
+        AND 	A.DELETEYN  =   'Y'
+        )
+       ORDER BY TO_NUMBER(FM_NUM )
+        
+	</select>
+	
+	<!-- 진로설계 리스트 뽑아오는거-->
+	<select id ="cdlist" parameterType="ssm.mi.vo.SMemberVO" resultMap="CareerdesignVO">
+	
+			SELECT distinct
+					        A.CD_NO,
+					        A.CD_VALUE,
+					        A.CD_INSERTDATE,
+					        A.CD_URL,
+					        A.SS_NO
+			FROM    
+        
+					        CAREER_DESIGN A
+					        
+			WHERE   A.SS_NO = #{ssNo}
+			AND 	SUBSTR(A.CD_INSERTDATE,0,2) =#{cdyearNo}
+	</select>
+	
+	<!-- 비교과뽑아오는거-->
+	<select id ="brlist" parameterType="ssm.mi.vo.SMemberVO" resultMap="NonprogramVO">
+	
+			SELECT * FROM
+		   (SELECT distinct
+        
+					        A.NP_NO,
+					        A.NP_TITLE,
+					        A.NP_PSDATE,
+					        A.NP_PEDATE,
+					        A.NP_CENTER,
+					        A.ACODE,
+                            CEIL(ROW_NUMBER() OVER(ORDER BY A.NP_PSDATE DESC)/ #{listSize}) PAGENO,
+                            COUNT(A.NP_NO) OVER() AS TOTALCOUNT,
+                            ROW_NUMBER() OVER (ORDER BY A.NP_PSDATE DESC ) as ROWNO 
+			FROM    
+    
+					        NONPROGRAM A,
+					        NON_APPLICATION B
+					        
+        
+			WHERE   A.NP_NO = B.NP_NO
+			AND     B.SS_NO = #{ssNo}
+			AND 	SUBSTR(A.NP_PSDATE,0,2) =#{bryearNo})ABC
+            WHERE ABC.PAGENO = #{brpageNo}
+            ORDER BY NP_PSDATE DESC
+	</select>
+	
+	<!-- 상담뽑아오는거-->
+	<select id ="cglist" parameterType="ssm.mi.vo.SMemberVO" resultMap="OnlineApplication_BoardVO">
+	
+			SELECT *FROM(SELECT  
+            OA_NO,
+            OA_INSERTDATE,
+            TT_NAME,
+            OA_FIELD,
+            CEIL(ROW_NUMBER() OVER(ORDER BY OA_INSERTDATE DESC)/ #{listSize}) PAGENO,
+            COUNT(OA_NO) OVER() AS TOTALCOUNT, 
+            ROW_NUMBER() OVER (ORDER BY OA_INSERTDATE DESC ) as ROWNO
+            
+            FROM
+            (SELECT distinct 
+					        A.OA_NO,
+					        A.OA_INSERTDATE,
+					        C.TT_NAME,
+					        (SELECT E.NAME FROM CODE_TABLE E WHERE A.OA_FIELD=E.CODE) OA_FIELD
+                        
+        
+			FROM    
+					        ONLINE_APPLICATION A,
+					        T_MEMBER C
+			WHERE 	A.SS_NO = #{ssNo}
+			AND  	A.TT_NO = C.TT_NO
+ 			AND 	SUBSTR(A.OA_INSERTDATE,0,2) =#{cgyearNo}
+ 			
+			UNION ALL 
+ 			
+ 			SELECT distinct 
+					        A.VR_NO,
+					        A.VR_DATE,
+					        C.TT_NAME,
+					       (SELECT E.NAME FROM CODE_TABLE E WHERE A.VR_FIELD=E.CODE) OA_FIELD
+                        
+        
+			FROM    
+					        VISITCOUNSEL_RSV A,
+					        T_MEMBER C
+			WHERE 	 A.SS_NO = #{ssNo}
+			AND 	 A.TT_NO = C.TT_NO
+			AND 	 SUBSTR(A.VR_INSERTDATE,0,2) =#{cgyearNo}))ABC
+            WHERE ABC.PAGENO = #{cgpageNo}
+            ORDER BY OA_INSERTDATE DESC 
+	</select>
+	
+	<!-- 가치관설립 뽑아오는거-->
+	<select id ="vslist" parameterType="ssm.mi.vo.SMemberVO" resultMap="ValuesettingVO">
+	
+			SELECT
+			                SS_NO,
+			                VS_FIRST,
+			                VS_SECOND,
+			                VS_THIRD,
+			                VS_INSERTDATE,
+			                VS_UPDATEDATE
+		     
+			FROM VALUE_SETTING
+			WHERE SS_NO = #{ssNo}
+							
+			 
+	</select>
+	
+	
+	<select id ="mylist" parameterType="ssm.mi.vo.SMemberVO" resultMap="smVO">
+	
+			SELECT 
+					        SS_NO,
+					        SS_NAME,
+					        SS_GRADE,
+					        SS_IMAGE
+        
+			FROM    
+					        S_MEMBER
+			WHERE SS_NO = #{ssNo}
+	</select>
+	
+</mapper>
